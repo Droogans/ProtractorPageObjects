@@ -234,4 +234,6 @@ To continue this tutorial, checkout the branch `chapter-01` via the command line
 
     $> git checkout chapter-1
 
+Or just [jump to it in your browser](../chapter-1/README.md).
+
 And we'll start defining our first pages, and write our first test.
