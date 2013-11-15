@@ -11,10 +11,10 @@
 - [Deconstructing a page.](#deconstructing-a-page)
 	- [Our sample page](#our-sample-page)
 	- [Base](#base)
-	- [Tabs](#tabs)
 	- [Table](#table)
 	- [Columns](#columns)
 	- [Rows](#rows)
+	- [Tabs](#tabs)
 - [About this Tutorial](#about-this-tutorial)
 
 ## Overview
@@ -163,36 +163,6 @@ The constant *"Epik Vote"* link takes the user to the home page, and the Sign Ou
 
 You may have noticed that in the Base object, there's no "Sign Out Button" object, or "Epik Vote" object. The reason for that is because Selenium provides great utilities for interacting with images, links, buttons, and so on. These elements are already as simple as they need to be. Abstracting over these elements any further would be a waste of time, and add unneeded complexity to the project. We're going to focus on the objects on our page that deliver information to the user. These are typically more complex, and require more attention.
 
-### Tabs
-
-There are a few ways you could construct this tab object.
-
-One way looks like this, and admittedly, I've seen it a lot:
-
-```javascript
-it('should have tabs', function () {
-    tabs[0].click();
-    expect(tabs[1].getText()).toEqual('Polls');
-});
-```
-
-This works for now, but I don't like it because it treats the tabs like they're in a list. That means if a tab element ever gets removed, it may break lots of tests in many places because `tabs[1]` isn't there anymore. I'll show you how to do it more like this:
-
-```javascript
-it('should have tabs', function () {
-    tabs.getTabs().then( function (tabs) {
-        tabs.profile.then( function (profileTab) {
-            profileTab.visit();
-        });
-        tabs.polls.then( function (pollsTab) {
-            expect(pollsTab.name).toEqual('Polls');
-        });
-    });
-});
-```
-
-As you can see, a tabs *object* is much more flexible. It becomes easier to update the definition of the object itself, and keep the references to the object symantically intact. It always helps to try and drive around an app by something *you* define, instead of relying on the way the page looks or is structured.
-
 ### Table
 
 This table actually has very little going on in and of itself. It's what's inside the table that is interesting to us. We'll probably just denote how to find the table, and reference that in our Columns and Rows objects.
@@ -224,6 +194,36 @@ it('should have data in the first row', function () {
     });
 });
 ```
+
+### Tabs
+
+There are a few ways you could construct this tab object.
+
+One way looks like this, and admittedly, I've seen it a lot:
+
+```javascript
+it('should have tabs', function () {
+    tabs[0].click();
+    expect(tabs[1].getText()).toEqual('Polls');
+});
+```
+
+This works for now, but I don't like it because it treats the tabs like they're in a list. That means if a tab element ever gets removed, it may break lots of tests in many places because `tabs[1]` isn't there anymore. I'll show you how to do it more like this:
+
+```javascript
+it('should have tabs', function () {
+    tabs.getTabs().then( function (tabs) {
+        tabs.profile.then( function (profileTab) {
+            profileTab.visit();
+        });
+        tabs.polls.then( function (pollsTab) {
+            expect(pollsTab.name).toEqual('Polls');
+        });
+    });
+});
+```
+
+As you can see, a tabs *object* is much more flexible. It becomes easier to update the definition of the object itself, and keep the references to the object symantically intact. It always helps to try and drive around an app by something *you* define, instead of relying on the way the page looks or is structured.
 
 ## About this Tutorial
 
