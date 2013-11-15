@@ -7,7 +7,7 @@
 	- [Selenium](#selenium)
 	- [Grunt](#grunt)
 - [I have no idea how to write page objects.](#i-have-no-idea-how-to-write-page-objects)
-- [I have written page objects before, but not in Javascript.](#i-have-written-page-objects-before-but-not-in-javascript)
+- [I haven't written page objects in Javascript.](#i-haven't-written-page-objects-in-javascript)
 - [Deconstructing a page.](#deconstructing-a-page)
 	- [Our sample page](#our-sample-page)
 	- [Base](#base)
