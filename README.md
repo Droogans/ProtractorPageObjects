@@ -77,7 +77,7 @@ $>: java -jar ~/Downloads/selenium-server-standalone-V.vv.x.jar
 
     grunt test:mid
 
-to execute the [`test:mid`](./tasks/test.js) task. This in turn executes the [`shell:protractor`](./tasks/options/shell.js) command, which essentially runs `protractor test/protractor.conf.js`. If all works well, you should see the following output:
+If all works well, you should see the following output:
 
 ```bash
 $>: grunt test:mid
@@ -95,7 +95,6 @@ Finished in 1.339 seconds
 Done, without errors.
 ```
 
-Again, you could jave just run `protractor test/protractor.conf.js` instead, and it would essentially do the same thing as above.
 > **PROTIP**: if you get an error, and your traceback is really short and unhelpful, try running `protractor test/protractor.conf.js` directly. You'll tend to get an exact location of syntax errors that way.
 
 ## I have no idea how to write page objects.
@@ -125,9 +124,9 @@ it('should navigate backwards one page at a time', function() {
 });
 ```
 
-The intent of these tests are clear, and easy to follow. The important thing to remember is, even if the way this website paginates through a table changes, as long as the `pagination` page object can keep its promises for navigating through them, these tests won't break. Maintainence becomes a much simpler task this way.
+The intent of these tests are clear, and easy to follow. Also, if the way pagination is handled changes, these tests won't break as long as these functions still deliver on this functionality. Maintainence becomes a much simpler task when you abstract over the low-level details of a page.
 
-## I have written page objects before, but not in Javascript.
+## I haven't written page objects in Javascript.
 
 If you've written page objects before, you might have done so using java or ruby, two very popular languages for doing this task in. Javascript is a bit different; the Selenium port of WebDriver to javascript uses an [asynchronous](https://code.google.com/p/selenium/wiki/WebDriverJs#Promises) paradigm, and at first can be very confusing to look at.
 
@@ -148,7 +147,7 @@ You can chain together these *promises* as deep as you need to. As you become co
 
 ## Deconstructing a page.
 
-Despite the name *page* objects, a page object isn't an *entire* page; there are many page objects on a page, and defining them requires that we explore the application a bit by hand, and look for similarities between the different pages. Anything that gets repeated over many pages needs to be stored seperately. We'll then combine all of them together as we need to when we go to write the actual tests.
+Despite the name *page* objects, a page object isn't an *entire* page; there are many page objects on a page, and defining them requires that we explore the application a bit by hand, and look for similarities between the different pages. Anything that gets repeated over many pages needs to be stored seperately. Then we combine them together when we go to write the actual tests.
 
 For instance, here's a screencap of a page that we'll be dissecting later in this tutorial, highlighted for clarity.
 
@@ -160,9 +159,9 @@ Let's go through and define each of these page objects, and see if we can't mock
 
 ### Base
 
-Contains the nav bar, essentially. The constant *"Epik Vote"* link takes the user to the home page, and the Sign Out button is always visible not matter where a user goes. This bar should be considered our "Base" object (even though it doesn't do much of anything).
+The constant *"Epik Vote"* link takes the user to the home page, and the Sign Out button is always visible not matter where a user goes. This bar should be considered our "Base" object (even though it doesn't do much of anything).
 
-You may have noticed that in the Base object, there's no "Sign Out Button" object, or "Epik Vote" object. The reason for that is because Selenium provides great utilities for interacting with images, links, buttons, and so on. These elements are already as simple as they need to be; to decompose these elements any further would be a waste of time, and add unneeded complexity to the project. We're going to focus on the objects on our page that deliver information to the user. These are typically more complex, and require more attention.
+You may have noticed that in the Base object, there's no "Sign Out Button" object, or "Epik Vote" object. The reason for that is because Selenium provides great utilities for interacting with images, links, buttons, and so on. These elements are already as simple as they need to be. Abstracting over these elements any further would be a waste of time, and add unneeded complexity to the project. We're going to focus on the objects on our page that deliver information to the user. These are typically more complex, and require more attention.
 
 ### Tabs
 
@@ -200,11 +199,11 @@ This table actually has very little going on in and of itself. It's what's insid
 
 ### Columns
 
-Just like with tabs, you don't want to denote your columns by their index. Name them instead. Columns might support sorting, if so, they'll need a `.sort()` method, perhaps taking an argument to designate what direction the sort should be in. Some other properties of a column might be `name`, `text`, `data`, and other convenience methods. 
+Just like with tabs, you don't want to denote your columns by their index. Name them instead. If they support sorting, they'll need a `.sort()` method, perhaps taking an argument to designate what direction the sort should be in. Some other properties of a column might be `name`, `text`, `data`, and other convenience methods.
 
 ### Rows
 
-Unlike columns and tabs, we don't want to name our rows. There's nothing we can name them by reliably, as they are simply vessles for our table's data. So our rows will be an array, since we can't predict what *all* of the rows are going to look like, but we can know what *each* row will look like. We should focus on that instead:
+Unlike columns and tabs, we don't want to name our rows, since there's nothing we can name them by reliably. Our rows will be an array since we can't predict what *all* of the rows are going to look like, but we can know what *each* row will look like. We should focus on that instead:
 
 ```javascript
 
@@ -230,7 +229,7 @@ it('should have data in the first row', function () {
 
 This tutorial will be broken up into various sections. This is just "Chapter 0" of the tutorial. You'll need to continue to learn more about how to construct these page objects using [Astrolabe](https://github.com/stuplum/astrolabe), a utility that keeps our page objects neat and tidy for us.
 
-To continue this tutorial, checkout the branch `chapter-01` via the command line:
+To continue this tutorial, checkout the branch `chapter-1` via the command line:
 
     $> git checkout chapter-1
 
