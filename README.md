@@ -1,50 +1,84 @@
+# Chapter 2 - The Front Page
 
-# Chapter 1 - The Outline
+We're going to start by defining the first page we see when arriving on our site, the front page.
 
-This chapter will focus on where we will put our page objects, and how we'll keep them organized as our application grows.
+Visit http://beta.epikvote.com to view the first page, which only supports a login button. We'll define our base elements, and use them to navigate to the actual login page.
 
-Here's what our project looks like right now:
+## Before we begin...
 
-```
-$:> tree test
-test
-├── pages
-│   ├── Base.js
-│   ├── login
-│   │   └── Form.js
-│   ├── polls
-│   │   ├── Columns.js
-│   │   ├── Rows.js
-│   │   └── Table.js
-│   └── profile
-│       ├── Basic.js
-│       ├── Politics.js
-│       └── Social.js
-├── protractor.conf.js
-└── stories
-    └── frontPage.js
+I want to preface this with a warning: some of this page object code is *boilerplate*, meaning it's repetetive and tedious. I wouldn't recommend typing it out by hand, unless you really want to. I certainly don't! I use some [snippets for my editor](https://github.com/Droogans/.emacs.d/tree/mac/snippets/js-mode/astrolabe) to greatly speed up this process. Those three are a good place to start.
 
-5 directories, 10 files
-```
-> **PROTIP**: You can install `tree` via `brew install tree` for mac, or `sudo apt-get install tree` in Linux.
+I highly recommend figuring out [how to add snippets to your editor](http://docs.sublimetext.info/en/sublime-text-3/extensibility/snippets.html), and including those three before we begin.
 
-However, all of these files are empty. They are just placeholders to allow some observations about their structure.
+## Writing our first page object
 
-Namely,
+Here's a preview of the page we're going to outline, and what we'll be defining:
 
-1. Our pages are actually page *directories*.
-  - We need to be able to keep things that belong on the same page together, but not in the same file.
-2. Our files describe parts of our entire page.
-  - Our "polls" page directory could just be one file. But we keep it separate to allow rows and columns to support more and more functionality without sacrificing readability of our code base.
-3. Our pages get namespaced this way.
-  - That way, if our profile gets a table later, it doesn't need to be called `profileTable.js`. It's just `profile/Table.js`, which compartmentalizes our thinking when working on one tiny section of a larger application.
-4. We can nest this as deep as we need to.
-  - Don't like that `profile/Politics.js` isn't `profile/politics/Form.js` instead? Well, then change it! This also holds true over time. If our profile page(s) get larger, smaller, or anything in between, shifting things around inside of it's own domain is relatively unobtrusive.
+## The base page
 
-Next, we'll take a look at writing our first page object, which handles logging in. It'll introduce Astrolabe, a tool designed to make page objects much easier to read and write.
+![epikvote.com's "splash" page.](./img/epikvote-base.png)
+
+A couple of things to note here:
+
+  - `tblDisqus` is a plugin from the Disqus website. If there's an issue with it, it's not our responsibility to fix it. You can write tests against it if you want to, but it should probably be done last. We have our own app to worry about.
+  - I prepended `lnk` in front of the link element, and `btn` in front of the button element. This is for:
+    - organizing our page elements in our page
+      - keep these elements *alphabetically* sorted
+      - this is *especially* important when working with a team.
+
+Here's a list of recommended prefixes that I use when defining page elements:
+
+## Recommended page element prefixes
+
+`btn` -- Button
+
+`chk` -- Checkbox
+ - This refers to an individual box, not a collection of checkboxes. It can be checked/unchecked.
+ - Similar to a `rad` element, except that you can select more than one checkbox.
+
+`ele` -- Element
+ - This is a very generic "element" element. Use this when you're not sure your element doesn't fit nicely into another category.
+ - Many times, `ele` elements are passed into functions that construct objects that make working with the page simpler.
+
+`img` -- Image
+ - Images can have link-like properties, but if it has a picture there, it's probably an image. Go with what a user is going to refer to an element as.
+
+`lbl` -- Label
+ - Literally just text on a screen. Has no interactive functionality.
+
+`lnk` -- Link
+
+`rad` -- Radio
+ - This refers to a single radio button, not a collection of them. It can be enabled/disabled.
+ - Similar to a `chk` element, except that only one radio button can be enabled in a given set of options at a time.
+
+`sel` -- Selection
+ - A dropdown list. I sometimes call these `lst` for lists.
+
+`tbl` -- Table
+ - A table is a group of just about anything. It encompasses a lot, and they get used frequently.
+ - Chances are, if you're using the `findElements()` function, you're most likely looking a table element.
+   - Even if you're not explicitly referring to a table.
+ - These are also *very* commonly passed into functions that construct objects that simplify working with the page.
+
+`txt` -- Textbox
+
+I cannot advocate using this system more. It should a requirement for all proposed additions to your test suite.
+
+## Our first page
+
+Let's jump to the annotated source of the [base page](./test/pages/Base.js) to see the different elements and methods available there.
+
+## Our first test
+
+Our [next test](./test/stories/frontPage.js) is almost identical to our first one. We simply make sure we can reach the login page by clicking the "Sign in" button, and that we return to the front page by clicking the Epik Vote link.
+
+Something important in that test: you can switch between your various pages very freely, referring to as many different pages as you need to during your tests. Just make sure that you're referring to the correct page at the correct time.
+
+## Continuing
 
 Run
 
-    $>: git checkout chapter-2
+    $>: git checkout chapter-3
 
-to skip ahead, or just [visit this branch in your browser](../chapter-2).
+to skip ahead, or just [visit this branch in your browser](../chapter-3).
