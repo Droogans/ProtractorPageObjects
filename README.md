@@ -1,4 +1,3 @@
-
 # Chapter 1 - The Outline
 
 This chapter will focus on where we will put our page objects, and how we'll keep them organized as our application grows.
@@ -41,7 +40,7 @@ Namely,
 4. We can nest this as deep as we need to.
   - Don't like that `profile/Politics.js` isn't `profile/politics/Form.js` instead? Well, then change it! This also holds true over time. If our profile page(s) get larger, smaller, or anything in between, shifting things around inside of it's own domain is relatively unobtrusive.
 
-Next, we'll take a look at writing our first page object, which handles logging in. It'll introduce Astrolabe, a tool designed to make page objects much easier to read and write.
+Next, we'll take a look at writing our first page object, which navigates us past the front page to the login page. There we'll introduce Astrolabe, a tool designed to make page objects much easier to read and write.
 
 Run
 
