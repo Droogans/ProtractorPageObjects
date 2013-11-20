@@ -25,7 +25,7 @@ Using a text editor, create a new file in the `test` directory called `credentia
 }
 ```
 
-When you do share this password with others, do so in a secure manner.
+When you do share your ignored passwords with others, do so in a secure manner.
 
 The main point is, give out production credentials on a per-person basis, and do so manually.
 
@@ -68,7 +68,8 @@ login: {
 
 This is a good start. Here are some improvements that are quite common, and can be used in other situations as well:
 
-1. Check if `username` and/or `password` is `undefined`. If so, use the default credentials provided in the project.
+1. Check if `username` and/or `password` is `undefined`.
+  - If so, use the default credentials provided in the project.
 2. Clear the textboxes before typing into them.
 
 To see a more in-depth login function, check [the source](test/pages/login/Form.js).
