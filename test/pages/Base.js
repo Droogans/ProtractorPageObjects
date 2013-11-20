@@ -44,13 +44,10 @@ module.exports = Page.create({
             var _this = this;
             var tabHref = tabName.toLowerCase();
             var tabCss = tblTabsCss + '[href$="' + tabHref  + '"]';
-            // We use `this.findElements` because it might return an empty list
             return this.findElements(this.by.css(tabCss)).then( function (tabs) {
                 if (tabs.length) {
-                    // If there is a list, we accept the first one as our tab
                     return _this._getTab(tabs[0]);
                 } else {
-                    // otherwise, the list is empty, and there is no such tab
                     _this.NoSuchTabException.thro(tabName);
                 }
             });

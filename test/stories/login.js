@@ -24,7 +24,7 @@ describe('Login page', function(){
     });
 
     it('should display an error if both username and password are incorrect', function() {
-        loginPage.login('INVALID', 'INVALID');        
+        loginPage.login('INVALID', 'INVALID');
         expect(loginPage.lblLoginError.isDisplayed()).toBe(true);
     });
 

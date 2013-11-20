@@ -1,169 +1,117 @@
-# Chapter 4 - The Tabs
+# Chapter 5 - The Polls Page
 
-We're going to introduce a pretty complex topic by using a simple example.
+## Tables, rows, and columns
 
-Here's an example: when you sign into a website where you are a regular user, perhaps you have two different tabs you can see. But when you sign in as an admin, you get an extra tab for managing some special features. I've seen these kinds of situations handled in the following way:
+This chapter will be dealing with complex objects, and some good ways to keep them easy to use over time.
+
+## A primer
+
+Last time we took a look at how to create our own custom objects.
+
+This lesson covers custom objects in more detail, taking time to explain a little more about how they work.
+
+The page objects defined here will require more effort to explain.
+
+This chapter also includes more of them as well.
+
+## A closer look at promises
+
+Take a look at the annotated source of the [`getHeading()`](test/pages/polls/Table.js) method to get a better understanding of how Selenium handles promises. We will be constructing a custom object using this model, and it will return a promise to us.
+
+**Q**: *Why don't page fields (`btnSignOut`, `lnkEpikVote`, etc.) need to be unwrapped?*
+
+>  - Astrolabe provides utilities that account for the unwrapping step, so you don't have to write it out.
+
+**Q**: *Why don't you have to unwrap promises that are used in a test's `expect` function?*
+
+>  - Jasmine knows how to handle promises passed into `expect`, and it will unwrap it one layer for you.
+
+**Q**: *How do I know if a promise is done being "unwrapped"?*
+
+>  - One way is to try and look up the API of the code you're interacting with, reading the source, or, if all else fails, sticking some `console.log(possiblePromiseObject)` to see if it can be unwrapped some more.
+
+**Q**: *How do I know if an object I've console.logged can be unwrapped further?*
+
+>  - If you use console.log and you see something that looks like the following, then you've got a promise object.
 
 ```javascript
-if (user.isAdmin()) {
-    tabs = getAdminTabs();
-} else {
-    tabs = getTabs();
+{ then: [Function: then],
+        cancel: [Function: cancel],
+        isPending: [Function: isPending] }
+```
+
+>  - Replace your current console.log statement with this:
+
+```javascript
+possiblePromiseObject.then( function (anotherPossiblePromise) {
+    console.log(anotherPossiblePromise);
+});
+```
+
+Eventually, you'll unwrap it all the way to your desired state.
+
+## Custom objects
+
+The secret to making good custom objects is to always return your results as a promise, and not a raw values (such as an integer, string, or list). This consistency makes it easier for others to use your custom objects without resorting to tedious debugging.
+
+I highly recommend requiring all custom objects to return promises from their methods/attributes.
+
+## For example
+
+Take this code, for instance:
+
+```javascript
+colums.getColumnByName('Votes').then( function (votesColumn) {
+    console.log(votesColumn);
+});
+```
+
+We want all of the properties of the column to formatted like this:
+
+```javascript
+{ name:
+   { then: [Function: then],
+     cancel: [Function: cancel],
+     isPending: [Function: isPending] },
+  data:
+    { then: [Function: then],
+     cancel: [Function: cancel],
+     isPending: [Function: isPending] }
 }
 ```
 
-A couple of things that are bad here:
-
-1. What does `isAdmin()` do?
-  - We'll have to maintain that function's logic to keep this up.
-2. What's the difference between `getAdminTabs()` and `getTabs()`?
-  - I bet the logic is ~80% the same between them.
-  - We'll have to maintain them seperately to keep this up.
-3. Are there any other roles?
-  - What if there's a new type of user added? Yet another if statement?
-
-## A look at dynamic objects
-
-The solution is to do something like this:
+And not like this:
 
 ```javascript
-tabs = getTabs();
-```
-
-Where `getTabs()` might look something like this:
-
-```javascript
-getTabs: {
-    value: function () {
-        var tabs = {};
-        return this.tblTabs.then( function (tabsTable) {
-            _.forEach(tabsTable, function (tab) {
-                return tab.getText().then( function (name) {
-                    tabs[name.toLowerCase()] = tab;
-                });
-            });
-            return tabs;
-        });
-    }
+{ name: "Votes",
+  data: [12, 22, 32]
 }
 ```
 
-All this does is:
+Again, this is because everything else works like the first example. Keep it consistent.
 
-1. Iterate over all of the tabs we currently have
-2. Get some attribute that uniquely identifies that tab
-3. Name the tab that
-4. Assign the tab itself to that name
+## Examples
 
-So now when we use the site as a regular user, our tabs look like this:
+[Rows and Columns](test/stories/polls.js) look nearly identical when implemented in their tests.
 
-```javascript
-{
-    profile: <WebDriverElement>,
-    polls: <WebDriverElement>
-}
-```
+However, there is a huge difference between how these were coded.
 
-And this same code will assign the special "admin" tabs as well:
+## A good example
 
-```javascript
-{
-    profile: <WebDriverElement>,
-    polls: <WebDriverElement>,
-    banhammer: <WebDriverElement>
-}
-```
+[Rows](test/pages/polls/Rows.js) has a very good example of how to implement row objects in a table.
 
-**Q**: *Won't my tests be different for different users though?*
->  - Yes. However, if I had to choose between remembering how my tests work versus how my page objects work, I'll choose the former. You can always abstract away user logins too, so that your login page features a `loginAdmin()` function to help with this.
+This is because all rows support numbered rows, which makes them easy to map to a page object.
 
-## Creating custom objects
+## An anti-pattern
 
-There are some neat things about using this "dynamic" model. We have a chance to intercept these tabs when we assign them to our `tabs` object, and give them special functionality.
+To bring attention to what can happen when a page's HTML is insufficient for creating page objects, I've shown some ways [not to define column objects](test/pages/polls/Columns.js).
 
-Instead of returning just a normal tab, we can pass this `tabObject` into a constructor that builds us additional functionality:
-
-```javascript
-getTabs: {
-    value: function () {
-        var _this = this;
-        var tabs = {};
-        return this.tblTabs.then( function (tabsTable) {
-            _.forEach(tabsTable, function (tab) {
-                return tab.getText().then( function (tabText) {
-                    tabs[tabText.toLowerCase()] = _this._getTab(tab);
-                });
-            });
-            return tabs;
-        });
-    }
-},
-
-_getTab: {
-    value: function (tabObject) {
-        var _this = this;
-        return {
-            // Skip to the source to see how these custom functions are implemented.
-            text: this._tabText(tabObject),
-            isActive: function () { return _this._tabIsActive(tabObject); },
-            visit: function () { return tabObject.click();  }
-        };
-    }
-}
-```
-
-## An example of this
-
-See the code for the [tabs on the base page](test/pages/Base.js), and their [respective tests](test/stories/tabs.js) for a more in-depth look at a working example.
-
-## Exceptions
-
-If you read through the source code for the `getTabByName` function, you may have noticed an else statement at the end that called `NoSuchTabException`. This happened since all the tabs had been searched, and none were found matching the tab the user asked for.
-
-Writing exceptions and throwing them are pretty simple. Just follow the example and you'll be fine.
-
-## Always write your own exceptions
-
-Which would you rather see when viewing the output of a failed test?
-
-```bash
-Failures:
-
-  1) Tabs should allow users to navigate by tabs
-   Message:
-     TypeError: Cannot read property 'text' of undefined
-```
-
-or
-
-```bash
-Failures:
-
-  1) Tabs should allow users to navigate by tabs
-   Message:
-     No such tab: Foo
-```
-
-The second one is clearly better. Keep this in mind when creating custom objects.
-
-I highly recommend requiring all custom objects to have reasonably managed exceptions for invalid use.
-
-## Installing exceptions
-
-The thing that you may notice is that this exception won't work yet, because you haven't downloaded it. If you go to [`package.json`](package.json), you'll see that a new dependency was added to the project: `exceptions`. To add this, just run
-
-```bash
-$> npm install .
-```
-
-To update your project's node modules.
-
->  **PROTIP**: if you ever want to add your own module to a project, like I did with exceptions, do so with `npm install --save-dev` followed by the package name.
+A common code smell is passing around text parameters into function to determine what you're going to do with some function.
 
 ## Continuing
 
 Run
 
-    $>: git checkout chapter-5
+    $>: git checkout chapter-6
 
-to skip ahead, or just [visit this branch in your browser](../chapter-5).
+to skip ahead, or just [visit this branch in your browser](../chapter-6).
