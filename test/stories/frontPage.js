@@ -11,12 +11,10 @@ describe('Main page', function() {
 
     it('should let me click through to the login page', function() {
         basePage.btnLogin.click();
-        // We switch to the loginPage here because we've navigated to it
         expect(loginPage.currentUrl).toEqual(browser.baseUrl + loginPage.url);
     });
 
     it('should return to the front page when clicking the Epik Vote link', function() {
-        // You can't call the loginPage here, because lnkEpikVote belongs to the basePage
         basePage.lnkEpikVote.click();
         expect(basePage.currentUrl).toEqual(browser.baseUrl + basePage.url);
     });
