@@ -1,3 +1,7 @@
+var grunt = require('grunt');
+
+var credentials = grunt.file.readJSON('test/credentials.json');
+
 exports.config = {
     // The address of a running selenium server. If this is specified,
     // seleniumServerJar and seleniumPort will be ignored.
@@ -14,6 +18,10 @@ exports.config = {
     // Capabilities to be passed to the webdriver instance.
     capabilities: {
         'browserName': 'firefox'
+    },
+
+    params: {
+        login: credentials
     },
 
     // Options to be passed to Jasmine-node.

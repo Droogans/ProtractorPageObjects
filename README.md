@@ -1,84 +1,88 @@
-# Chapter 2 - The Front Page
+# Chapter 3 - The Login Page
 
-We're going to start by defining the first page we see when arriving on our site, the front page.
+This section is going to cover an important part of many sites: logging in.
 
-Visit http://beta.epikvote.com to view the first page, which only supports a login button. We'll define our base elements, and use them to navigate to the actual login page.
+## The problem with logging into sites
 
-## Before we begin...
+**Q**: *Where do I put the credentials for logging in?*
 
-I want to preface this with a warning: some of this page object code is *boilerplate*, meaning it's repetetive and tedious. I wouldn't recommend typing it out by hand, unless you really want to. I certainly don't! I use some [snippets for my editor](https://github.com/Droogans/.emacs.d/tree/mac/snippets/js-mode/astrolabe) to greatly speed up this process. Those three are a good place to start.
+>  - This depends on where you're logging in. Is it a staging environment, using test accounts? You might be able to get away with placing those kind of passwords in a [configuration file](https://github.com/angular/protractor/blob/cda66d7d9efa48a9acb08d2f97c79fbe7baa31d7/referenceConf.js#L85) accessible to protractor.
 
-I highly recommend figuring out [how to add snippets to your editor](http://docs.sublimetext.info/en/sublime-text-3/extensibility/snippets.html), and including those three before we begin.
+**Q**: *I am using sensitive passwords in a production-like environment. How do I handle this?*
 
-## Writing our first page object
+>  - First of all, *this is a bad idea*. But I understand that you might find yourself in this position. Whatever you do, [**do not check in passwords to repositories, public or private**](https://help.github.com/articles/remove-sensitive-data). For the sake of best practices, we'll cover a way to hide our passwords and use them in a semi-secured fashion.
 
-Here's a preview of the page we're going to outline, and what we'll be defining:
+Since our site is "live" (for ease of access), we'll have to use a live production account. I will supply you a username and password seperately that you'll need to add to a file that's been ignored by the project: `test/credentials.json`. This file has to be added to the [.gitignore](.gitignore) to work, which I've already done.
 
-## The base page
+## Storing passwords (semi) securely
 
-![epikvote.com's "splash" page.](./img/epikvote-base.png)
+Using a text editor, create a new file in the `test` directory called `credentials.json`. Inside of it, copy and paste these credentials into it:
 
-A couple of things to note here:
+```json
+{
+    "username": "chris",
+    "password": "qwerty"
+}
+```
 
-  - `tblDisqus` is a plugin from the Disqus website. If there's an issue with it, it's not our responsibility to fix it. You can write tests against it if you want to, but it should probably be done last. We have our own app to worry about.
-  - I prepended `lnk` in front of the link element, and `btn` in front of the button element. This is for:
-    - organizing our page elements in our page
-      - keep these elements *alphabetically* sorted
-      - this is *especially* important when working with a team.
+When you do share this password with others, do so in a secure manner.
 
-Here's a list of recommended prefixes that I use when defining page elements:
+The main point is, give out production credentials on a per-person basis, and do so manually.
 
-## Recommended page element prefixes
+## Using ignored passwords
 
-`btn` -- Button
+The trick to making this all work is replacing a line that would normally store our passwords with this:
 
-`chk` -- Checkbox
- - This refers to an individual box, not a collection of checkboxes. It can be checked/unchecked.
- - Similar to a `rad` element, except that you can select more than one checkbox.
+```javascript
+params: {
+    login: grunt.file.readJSON('test/credentials.json')
+  }
+```
 
-`ele` -- Element
- - This is a very generic "element" element. Use this when you're not sure your element doesn't fit nicely into another category.
- - Many times, `ele` elements are passed into functions that construct objects that make working with the page simpler.
+Now our protractor instance has our username and password at runtime without explicitly revealing what those are in the code.
 
-`img` -- Image
- - Images can have link-like properties, but if it has a picture there, it's probably an image. Go with what a user is going to refer to an element as.
+See the actual [protractor configuration file](test/protractor.conf.js) for more info about how to go about doing this.
 
-`lbl` -- Label
- - Literally just text on a screen. Has no interactive functionality.
+## Defining our login page
 
-`lnk` -- Link
+Aside from defining our page elements, a new feature of Astrolabe is exposed here: page functions.
 
-`rad` -- Radio
- - This refers to a single radio button, not a collection of them. It can be enabled/disabled.
- - Similar to a `chk` element, except that only one radio button can be enabled in a given set of options at a time.
+## When to use page functions
 
-`sel` -- Selection
- - A dropdown list. I sometimes call these `lst` for lists.
+Think about what steps are involved in logging in:
 
-`tbl` -- Table
- - A table is a group of just about anything. It encompasses a lot, and they get used frequently.
- - Chances are, if you're using the `findElements()` function, you're most likely looking a table element.
-   - Even if you're not explicitly referring to a table.
- - These are also *very* commonly passed into functions that construct objects that simplify working with the page.
+1. Entering a username and password
+2. Clicking the sign in button
 
-`txt` -- Textbox
+Since we have more than one action going on there, we should wrap this up into a function. A basic function would look like this:
 
-I cannot advocate using this system more. It should a requirement for all proposed additions to your test suite.
+```javascript
+login: {
+        value: function (username, password) {
+            this.txtUsername.sendKeys(username);
+            this.txtPassword.sendKeys(password);
+            this.btnLogin.click();
+        }
+    }
+```
 
-## Our first page
+This is a good start. Here are some improvements that are quite common, and can be used in other situations as well:
 
-Let's jump to the annotated source of the [base page](./test/pages/Base.js) to see the different elements and methods available there.
+1. Check if `username` and/or `password` is `undefined`. If so, use the default credentials provided in the project.
+2. Clear the textboxes before typing into them.
 
-## Our first test
+To see a more in-depth login function, check [the source](test/pages/login/Form.js).
 
-Our [next test](./test/stories/frontPage.js) is almost identical to our first one. We simply make sure we can reach the login page by clicking the "Sign in" button, and that we return to the front page by clicking the Epik Vote link.
+## Our login tests
 
-Something important in that test: you can switch between your various pages very freely, referring to as many different pages as you need to during your tests. Just make sure that you're referring to the correct page at the correct time.
+See the test exercising the [login page](test/stories/login.js) for some basic examples of login tests.
+
+One final note: the setup for this test required that we manually navigate to the login page. We wrapped this in a `beofreAll` test that doesn't actually test anything. Now that we have to login to our site to continue testing it, we'll see more `beforeAll` tests. These are simply there to highlight the set up and, later, teardown.
 
 ## Continuing
 
 Run
 
-    $>: git checkout chapter-3
+    $>: git checkout chapter-4
 
-to skip ahead, or just [visit this branch in your browser](../chapter-3).
+to skip ahead, or just [visit this branch in your browser](../chapter-4).
