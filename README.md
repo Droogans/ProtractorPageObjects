@@ -1,4 +1,4 @@
-# Chapter 3 - The Tabs
+# Chapter 4 - The Tabs
 
 We're going to introduce a pretty complex topic by using a simple example.
 
