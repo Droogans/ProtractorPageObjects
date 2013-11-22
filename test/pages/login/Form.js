@@ -3,20 +3,20 @@ var Page = require('astrolabe').Page;
 module.exports = Page.create({
     url: { value: '/login' },
 
-    btnLogin: { 
-        get: function() { return this.findElement(this.by.css('button[type="submit"]')); } 
+    btnLogin: {
+        get: function() { return this.findElement(this.by.css('button[type="submit"]')); }
     },
 
-    lblLoginError: { 
-        get: function() { return this.findElement(this.by.css('div.alert')); } 
+    lblLoginError: {
+        get: function() { return this.findElement(this.by.css('div.alert')); }
     },
 
-    lnkForgotPassword: { 
-        get: function() { return this.findElement(this.by.css('a[href="/forgotPassword"]')); } 
+    lnkForgotPassword: {
+        get: function() { return this.findElement(this.by.css('a[href="/forgotPassword"]')); }
     },
 
-    lnkCreateAccount: { 
-        get: function() { return this.findElement(this.by.css('a[href="/signup"]')); } 
+    lnkCreateAccount: {
+        get: function() { return this.findElement(this.by.css('a[href="/signup"]')); }
     },
 
     txtUsername: {

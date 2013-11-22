@@ -2,7 +2,7 @@
 
 We're going to introduce a pretty complex topic by using a simple example.
 
-Here's an example: when you sign into a website where you are a regular user, perhaps you have two different tabs you can see. But when you sign in as an admin, you get an extra tab for managing some features. I've seen these kinds of situations handled in the following way:
+Here's an example: when you sign into a website where you are a regular user, perhaps you have two different tabs you can see. But when you sign in as an admin, you get an extra tab for managing some special features. I've seen these kinds of situations handled in the following way:
 
 ```javascript
 if (user.isAdmin()) {
@@ -36,12 +36,14 @@ Where `getTabs()` might look something like this:
 getTabs: {
     value: function () {
         var tabs = {};
-        _.forEach(this.tblTabs, function (tab) {
-            return tab.getAttribute('data-name').then( function (name) {
-                tabs[name] = tab;
+        return this.tblTabs.then( function (tabsTable) {
+            _.forEach(this.tblTabs, function (tab) {
+                return tab.getText().toLowerCase().then( function (name) {
+                    tabs[name] = tab;
+                });
             });
+            return tabs;
         });
-        return tabs;
     }
 }
 ```
@@ -75,6 +77,41 @@ And this same code will assign the special "admin" tabs as well:
 **Q**: *Won't my tests be different for different users though?*
 >  - Yes. However, if I had to choose between remembering how my tests work versus how my over complicated page objects work, I'll choose the former. You can always abstract away user logins too, so that your login page features a `loginAdmin()` function to help with this.
 
+## Creating custom objects
+
+There are some neat things about using this "dynamic" model. We have a chance to intercept these tabs when we assign them to our `tabs` object, and give them special functionality.
+
+Instead of returning just a normal tab, we can pass this `tabObject` into a constructor that builds us additional functionality:
+
+```javascript
+getTabs: {
+    value: function () {
+        var _this = this;
+        var tabs = {};
+        return this.tblTabs.then( function (tabsTable) {
+            _.forEach(tabsTable, function (tab) {
+                return tab.getText().then( function (tabText) {
+                    tabs[tabText.toLowerCase()] = _this._getTab(tab);
+                });
+            });
+            return tabs;
+        });
+    }
+},
+
+_getTab: {
+    value: function (tabObject) {
+        var _this = this;
+        return {
+            text: this._tabText(tabObject),
+            // Skip to the source to see how these custom functions are implemented.
+            isActive: function () { return _this._tabIsActive(tabObject); },
+            visit: function () { return tabObject.click();  }
+        };
+    }
+}
+```
+
 ## An example of this
 
 See the code for the [tabs on the base page](test/pages/Base.js), and their [respective tests](test/stories/tabs.js) for a more in-depth look at a working example.
@@ -83,7 +120,35 @@ See the code for the [tabs on the base page](test/pages/Base.js), and their [res
 
 If you read through the source code for the `getTabByName` function, you may have noticed an else statement at the end that called `NoSuchTabException`. This happened since all the tabs had been searched, and none were found matching the tab the user asked for.
 
-Writing exceptions and throwing them are pretty simple. Just follow the example and you'll be find.
+Writing exceptions and throwing them are pretty simple. Just follow the example and you'll be fine.
+
+## Always write your own exceptions
+
+Which would you rather see when viewing the output of a failed test?
+
+```bash
+Failures:
+
+  1) Tabs should allow users to navigate by tabs
+   Message:
+     TypeError: Cannot read property 'text' of undefined
+```
+
+or
+
+```bash
+Failures:
+
+  1) Tabs should allow users to navigate by tabs
+   Message:
+     No such tab: Foo
+```
+
+The second one is clearly better. Keep this in mind when creating custom objects.
+
+I highly recommend requiring all custom objects to have reasonably managed exceptions for invalid use.
+
+## Installing exceptions
 
 The thing that you may notice is that this exception won't work yet, because you haven't downloaded it. If you go to [`package.json`](package.json), you'll see that a new dependency was added to the project: `exceptions`. To add this, just run
 
