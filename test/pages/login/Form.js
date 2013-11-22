@@ -28,15 +28,11 @@ module.exports = Page.create({
     },
 
     login: {
-        // Like `get:` was for page fields, `value:` signifies a function for the page object.
-        // This is where the arguments for your page function are supplied.
         value: function (username, password) {
             if (username === undefined) {
-                // Astrolabe provides `this.driver`, which maps to the protractor instance.
                 username = this.driver.params.login.username;
             }
             if (password === undefined) {
-                // With this code, successful logins can be shortened to `loginPage.login();`
                 password = this.driver.params.login.password;
             }
             this.txtUsername.clear();

@@ -1,88 +1,104 @@
-# Chapter 3 - The Login Page
+# Chapter 3 - The Tabs
 
-This section is going to cover an important part of many sites: logging in.
+We're going to introduce a pretty complex topic by using a simple example.
 
-## The problem with logging into sites
+Here's an example: when you sign into a website where you are a regular user, perhaps you have two different tabs you can see. But when you sign in as an admin, you get an extra tab for managing some features. I've seen these kinds of situations handled in the following way:
 
-**Q**: *Where do I put the credentials for logging in?*
-
->  - This depends on where you're logging in. Is it a staging environment, using test accounts? You might be able to get away with placing those kind of passwords in a [configuration file](https://github.com/angular/protractor/blob/cda66d7d9efa48a9acb08d2f97c79fbe7baa31d7/referenceConf.js#L85) accessible to protractor.
-
-**Q**: *I am using sensitive passwords in a production-like environment. How do I handle this?*
-
->  - First of all, *this is a bad idea*. But I understand that you might find yourself in this position. Whatever you do, [**do not check in passwords to repositories, public or private**](https://help.github.com/articles/remove-sensitive-data). For the sake of best practices, we'll cover a way to hide our passwords and use them in a semi-secured fashion.
-
-Since our site is "live" (for ease of access), we'll have to use a live production account. I will supply you a username and password seperately that you'll need to add to a file that's been ignored by the project: `test/credentials.json`. This file has to be added to the [.gitignore](.gitignore) to work, which I've already done.
-
-## Storing passwords (semi) securely
-
-Using a text editor, create a new file in the `test` directory called `credentials.json`. Inside of it, copy and paste these credentials into it:
-
-```json
-{
-    "username": "chris",
-    "password": "qwerty"
+```javascript
+if (user.isAdmin()) {
+    tabs = getAdminTabs();
+} else {
+    tabs = getTabs();
 }
 ```
 
-When you do share this password with others, do so in a secure manner.
+A couple of things that are bad here:
 
-The main point is, give out production credentials on a per-person basis, and do so manually.
+1. What does `isAdmin()` do?
+  - We'll have to maintain that function's logic to keep this up.
+2. What's the difference between `getAdminTabs()` and `getTabs()`?
+  - I bet the logic is ~80% the same between them.
+  - We'll have to maintain them seperately to keep this up.
+3. Are there any other roles?
+  - What if there's a new type of user added? Yet another if statement?
 
-## Using ignored passwords
+## A look at dynamic objects
 
-The trick to making this all work is replacing a line that would normally store our passwords with this:
+The solution is to do something like this:
 
 ```javascript
-params: {
-    login: grunt.file.readJSON('test/credentials.json')
-  }
+tabs = getTabs();
 ```
 
-Now our protractor instance has our username and password at runtime without explicitly revealing what those are in the code.
-
-See the actual [protractor configuration file](test/protractor.conf.js) for more info about how to go about doing this.
-
-## Defining our login page
-
-Aside from defining our page elements, a new feature of Astrolabe is exposed here: page functions.
-
-## When to use page functions
-
-Think about what steps are involved in logging in:
-
-1. Entering a username and password
-2. Clicking the sign in button
-
-Since we have more than one action going on there, we should wrap this up into a function. A basic function would look like this:
+Where `getTabs()` might look something like this:
 
 ```javascript
-login: {
-        value: function (username, password) {
-            this.txtUsername.sendKeys(username);
-            this.txtPassword.sendKeys(password);
-            this.btnLogin.click();
-        }
+getTabs: {
+    value: function () {
+        var tabs = {};
+        _.forEach(this.tblTabs, function (tab) {
+            return tab.getAttribute('data-name').then( function (name) {
+                tabs[name] = tab;
+            });
+        });
+        return tabs;
     }
+}
 ```
 
-This is a good start. Here are some improvements that are quite common, and can be used in other situations as well:
+All this does is:
 
-1. Check if `username` and/or `password` is `undefined`. If so, use the default credentials provided in the project.
-2. Clear the textboxes before typing into them.
+1. Iterate over all of the tabs we currently have
+2. Get some attribute that uniquely identifies that tab
+3. Name the tab that
+4. Assign the tab itself to that name
 
-To see a more in-depth login function, check [the source](test/pages/login/Form.js).
+So now when we use the site as a regular user, our tabs look like this:
 
-## Our login tests
+```javascript
+{
+    profile: <WebDriverElement>,
+    polls: <WebDriverElement>
+}
+```
 
-See the test exercising the [login page](test/stories/login.js) for some basic examples of login tests.
+And this same code will assign the special "admin" tabs as well:
 
-One final note: the setup for this test required that we manually navigate to the login page. We wrapped this in a `beofreAll` test that doesn't actually test anything. Now that we have to login to our site to continue testing it, we'll see more `beforeAll` tests. These are simply there to highlight the set up and, later, teardown.
+```javascript
+{
+    profile: <WebDriverElement>,
+    polls: <WebDriverElement>,
+    banhammer: <WebDriverElement>
+}
+```
+
+**Q**: *Won't my tests be different for different users though?*
+>  - Yes. However, if I had to choose between remembering how my tests work versus how my over complicated page objects work, I'll choose the former. You can always abstract away user logins too, so that your login page features a `loginAdmin()` function to help with this.
+
+## An example of this
+
+See the code for the [tabs on the base page](test/pages/Base.js), and their [respective tests](test/stories/tabs.js) for a more in-depth look at a working example.
+
+## Exceptions
+
+If you read through the source code for the `getTabByName` function, you may have noticed an else statement at the end that called `NoSuchTabException`. This happened since all the tabs had been searched, and none were found matching the tab the user asked for.
+
+Writing exceptions and throwing them are pretty simple. Just follow the example and you'll be find.
+
+The thing that you may notice is that this exception won't work yet, because you haven't downloaded it. If you go to [`package.json`](package.json), you'll see that a new dependency was added to the project: `exceptions`. To add this, just run
+
+```bash
+$> npm install .
+```
+
+To update your project's node modules.
+
+>  **PROTIP**: if you ever want to add your own module to a project, like I did with exceptions, do so with `npm install --save-dev` followed by the package name.
 
 ## Continuing
 
 Run
 
-    $>: git checkout chapter-4
+    $>: git checkout chapter-5
 
-to skip ahead, or just [visit this branch in your browser](../chapter-4).
+to skip ahead, or just [visit this branch in your browser](../chapter-5).
