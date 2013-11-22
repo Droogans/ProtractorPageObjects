@@ -37,9 +37,9 @@ getTabs: {
     value: function () {
         var tabs = {};
         return this.tblTabs.then( function (tabsTable) {
-            _.forEach(this.tblTabs, function (tab) {
-                return tab.getText().toLowerCase().then( function (name) {
-                    tabs[name] = tab;
+            _.forEach(tabsTable, function (tab) {
+                return tab.getText().then( function (name) {
+                    tabs[name.toLowerCase()] = tab;
                 });
             });
             return tabs;
@@ -75,7 +75,7 @@ And this same code will assign the special "admin" tabs as well:
 ```
 
 **Q**: *Won't my tests be different for different users though?*
->  - Yes. However, if I had to choose between remembering how my tests work versus how my over complicated page objects work, I'll choose the former. You can always abstract away user logins too, so that your login page features a `loginAdmin()` function to help with this.
+>  - Yes. However, if I had to choose between remembering how my tests work versus how my page objects work, I'll choose the former. You can always abstract away user logins too, so that your login page features a `loginAdmin()` function to help with this.
 
 ## Creating custom objects
 
@@ -103,8 +103,8 @@ _getTab: {
     value: function (tabObject) {
         var _this = this;
         return {
-            text: this._tabText(tabObject),
             // Skip to the source to see how these custom functions are implemented.
+            text: this._tabText(tabObject),
             isActive: function () { return _this._tabIsActive(tabObject); },
             visit: function () { return tabObject.click();  }
         };
