@@ -26,11 +26,18 @@ module.exports = Page.create({
 
     getTabs: {
         value: function () {
+            // First, we need to create a reference to `this`.
+            // Since we're using functions inside of other functions,
+            // the scope of the `this` keyword changes.
+            // By copying the original scope, we can use it as we'd expect.
             var _this = this;
             var tabs = {};
             return this.tblTabs.then( function (tabsTable) {
                 _.forEach(tabsTable, function (tab) {
                     return tab.getText().then( function (tabText) {
+                        // Here, we use the original `_this` from above.
+                        // Without it, we'd be referring to the `this`
+                        // we got when we created `tab.getText().then()`
                         tabs[tabText.toLowerCase()] = _this._getTab(tab);
                     });
                 });
@@ -66,10 +73,16 @@ module.exports = Page.create({
     },
 
     _getTab: {
+        // We prepend this function with an underscore to serve as an
+        // indicator/warning that, although this function is public,
+        // it's really only supposed to be used internally.
+        // If you want to *actually* get a tab, use `getTabs`,
+        // which is the "friendly" public function.
         value: function (tabObject) {
             var _this = this;
             return {
                 text: this._tabText(tabObject),
+                // `visit` and `isActive` are functions. This is how you make one.
                 isActive: function () { return _this._tabIsActive(tabObject); },
                 visit: function () { return tabObject.click();  }
             };
