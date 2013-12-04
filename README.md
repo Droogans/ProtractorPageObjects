@@ -51,6 +51,25 @@ And then install this project's dependencies locally:
 
 You will have all dependencies in this project's [`package.json`](./package.json) file installed in your `node_modules` file.
 
+Double check that your `$PATH` variable is set up correctly for node:
+
+    which grunt
+
+If you don't see anything, you need to edit your `~/.bashrc` or `~/.bash_profile` and add this line:
+
+    PATH=$PATH:/usr/local/share/npm/bin
+
+Then run `source ~/.bash_profile` to update your system's path. Then try `which grunt` again.
+
+It should look like this:
+
+```bash
+$> which grunt
+/usr/local/bin/grunt
+```
+
+> **PROTIP**: If this still isn't working, you may have added the wrong location to your `PATH` variable. Check out [this suggestion](http://stackoverflow.com/a/16635816/881224) to see what the correct `PATH` entry should be.
+
 ## I have some experience using Node.
 
 Ok. Make sure you have Protractor available globally. Use `npm install -g protractor` to achieve this.
@@ -70,6 +89,8 @@ $>: java -jar ~/Downloads/selenium-server-standalone-V.vv.x.jar
 > **NOTE**: `V.vv.x` is the version of your jarfile that you downloaded. Don't copy and paste this line.
 
 > - Another note: it may be helpful for you to create an [alias](http://askubuntu.com/a/17537/159262) to this command, as you'll use it frequently.
+
+Once you run this command, it becomes a dedicated process that will use up your terminal. Just leave it be and open a new terminal window to continue working.
 
 ### Grunt
 
