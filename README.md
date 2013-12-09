@@ -248,7 +248,7 @@ As you can see, a tabs *object* is much more flexible. It becomes easier to upda
 
 ## About this Tutorial
 
-This tutorial will be broken up into various sections. This is just "Chapter 0" of the tutorial. You'll need to continue to learn more about how to construct these page objects using [Astrolabe](https://github.com/stuplum/astrolabe), a utility that keeps our page objects neat and tidy for us.
+This tutorial will be broken up into various sections. This is just "Chapter 0" of the tutorial. You'll need to continue to learn more about how to construct these page objects using Astrolabe, a utility that keeps our page objects neat and tidy for us.
 
 To continue this tutorial, checkout the branch `chapter-1` via the command line:
 
