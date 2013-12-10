@@ -84,6 +84,6 @@ One final note: the setup for this test required that we manually navigate to th
 
 Run
 
-    $>: git checkout chapter-4
+    $> git checkout -b chapter-4 origin/chapter-4
 
 to skip ahead, or just [visit this branch in your browser](../chapter-4).
