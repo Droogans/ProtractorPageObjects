@@ -164,6 +164,6 @@ To update your project's node modules.
 
 Run
 
-    $>: git checkout chapter-5
+    $> git checkout -b chapter-5 origin/chapter-5
 
 to skip ahead, or just [visit this branch in your browser](../chapter-5).
