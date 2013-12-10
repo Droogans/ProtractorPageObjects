@@ -79,6 +79,6 @@ Something important in that test: you can switch between your various pages very
 
 Run
 
-    $>: git checkout chapter-3
+    $> git checkout -b chapter-3 origin/chapter-3
 
 to skip ahead, or just [visit this branch in your browser](../chapter-3).
