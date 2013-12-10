@@ -44,6 +44,6 @@ Next, we'll take a look at writing our first page object, which navigates us pas
 
 Run
 
-    $>: git checkout chapter-2
+    $> git checkout -b chapter-2 origin/chapter-2
 
 to skip ahead, or just [visit this branch in your browser](../chapter-2).
