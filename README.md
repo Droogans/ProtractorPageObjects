@@ -112,6 +112,6 @@ A common code smell is passing around text parameters into function to determine
 
 Run
 
-    $>: git checkout chapter-6
+    $> git checkout -b chapter-6 origin/chapter-6
 
 to skip ahead, or just [visit this branch in your browser](../chapter-6).
