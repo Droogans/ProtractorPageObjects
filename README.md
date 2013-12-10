@@ -252,7 +252,7 @@ This tutorial will be broken up into various sections. This is just "Chapter 0" 
 
 To continue this tutorial, checkout the branch `chapter-1` via the command line:
 
-    $> git checkout chapter-1
+    $> git checkout -b chapter-1 origin/chapter-1
 
 Or just [jump to it in your browser](../chapter-1/README.md).
 
