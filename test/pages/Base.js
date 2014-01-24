@@ -32,9 +32,9 @@ module.exports = Page.create({
             // By copying the original scope, we can use it as we'd expect.
             var _this = this;
             var tabs = {};
-            return this.tblTabs.then( function (tabsTable) {
+            return this.tblTabs.then(function (tabsTable) {
                 _.forEach(tabsTable, function (tab) {
-                    return tab.getText().then( function (tabText) {
+                    return tab.getText().then(function (tabText) {
                         // Here, we use the original `_this` from above.
                         // Without it, we'd be referring to the `this`
                         // we got when we created `tab.getText().then()`
@@ -52,7 +52,7 @@ module.exports = Page.create({
             var tabHref = tabName.toLowerCase();
             var tabCss = tblTabsCss + '[href$="' + tabHref  + '"]';
             // We use `this.findElements` because it might return an empty list
-            return this.findElements(this.by.css(tabCss)).then( function (tabs) {
+            return this.findElements(this.by.css(tabCss)).then(function (tabs) {
                 if (tabs.length) {
                     // If there is a list, we accept the first one as our tab
                     return _this._getTab(tabs[0]);
@@ -66,7 +66,7 @@ module.exports = Page.create({
 
     isLoggedIn: {
         value: function () {
-            return this.btnLogout.getText().then( function (buttonText) {
+            return this.btnLogout.getText().then(function (buttonText) {
                 return buttonText === 'Sign Out';
             });
         }
@@ -91,7 +91,7 @@ module.exports = Page.create({
 
     _tabIsActive: {
         value: function (tabObject) {
-            return tabObject.getCssValue('color').then( function (fontColor) {
+            return tabObject.getCssValue('color').then(function (fontColor) {
                 // White font for active tabs
                 return fontColor === 'rgba(255, 255, 255, 1)';
             });
@@ -100,7 +100,7 @@ module.exports = Page.create({
 
     _tabText: {
         value: function (tabObject) {
-            return tabObject.getText().then( function (tabText) {
+            return tabObject.getText().then(function (tabText) {
                 return tabText;
             });
         }
