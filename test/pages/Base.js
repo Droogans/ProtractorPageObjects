@@ -8,7 +8,7 @@ module.exports = Page.create({
     },
 
     btnLogout: { 
-        // This is aliased to btnLogin, providing a meaningful symantic binding
+        // This is aliased to btnLogin, providing a meaningful semantic binding
         get: function() { return this.btnLogin; }
     },
 
