@@ -11,7 +11,7 @@ describe('Tabs', function() {
     });
 
     it('should display two tabs', function() {
-        basePage.getTabs().then( function (tabs) {
+        basePage.getTabs().then(function (tabs) {
             expect(_.size(tabs)).toEqual(2);
             expect(tabs.profile.text).toEqual('Profile');
             expect(tabs.profile.isActive()).toBe(false);
@@ -21,11 +21,11 @@ describe('Tabs', function() {
     });
 
     it('should allow users to navigate by tabs', function() {
-        basePage.getTabByName('Polls').then( function (pollsTab) {
+        basePage.getTabByName('Polls').then(function (pollsTab) {
             pollsTab.visit();
             expect(pollsTab.isActive()).toBe(true);
         });
-        basePage.getTabByName('Profile').then( function (profileTab) {
+        basePage.getTabByName('Profile').then(function (profileTab) {
             profileTab.visit();
             expect(profileTab.isActive()).toBe(true);
         });

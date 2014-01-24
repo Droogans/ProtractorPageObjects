@@ -22,10 +22,10 @@ module.exports = Page.create({
             // halts execution at that point in the application until the previous `.then` statement(s) return.
             // If you leave the return statement out, it won't wait here, and you'll get code that runs too early.
             // Sometimes, this is what you want to have happen.
-            return this.tblPolls.findElement(this.by.css('div.heading')).then( function (headingElement) {
+            return this.tblPolls.findElement(this.by.css('div.heading')).then(function (headingElement) {
                 // For instance, this headingElement won't do anything until the above `return` statement happens.
                 // And when it does finish, it will continue here, returning yet another promise.
-                return headingElement.getText().then( function (headingText) {
+                return headingElement.getText().then(function (headingText) {
                     // Here, we have the result of the `getText()` promise, which is just the text in `headingElement`.
                     // We do not return a promise. We've "unwrapped" this promise all the way to the bottom.
                     // All we have now is text. Let's return it.

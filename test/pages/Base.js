@@ -28,9 +28,9 @@ module.exports = Page.create({
         value: function () {
             var _this = this;
             var tabs = {};
-            return this.tblTabs.then( function (tabsTable) {
+            return this.tblTabs.then(function (tabsTable) {
                 _.forEach(tabsTable, function (tab) {
-                    return tab.getText().then( function (tabText) {
+                    return tab.getText().then(function (tabText) {
                         tabs[tabText.toLowerCase()] = _this._getTab(tab);
                     });
                 });
@@ -44,7 +44,7 @@ module.exports = Page.create({
             var _this = this;
             var tabHref = tabName.toLowerCase();
             var tabCss = tblTabsCss + '[href$="' + tabHref  + '"]';
-            return this.findElements(this.by.css(tabCss)).then( function (tabs) {
+            return this.findElements(this.by.css(tabCss)).then(function (tabs) {
                 if (tabs.length) {
                     return _this._getTab(tabs[0]);
                 } else {
@@ -56,7 +56,7 @@ module.exports = Page.create({
 
     isLoggedIn: {
         value: function () {
-            return this.btnLogout.getText().then( function (buttonText) {
+            return this.btnLogout.getText().then(function (buttonText) {
                 return buttonText === 'Sign Out';
             });
         }
@@ -75,7 +75,7 @@ module.exports = Page.create({
 
     _tabIsActive: {
         value: function (tabObject) {
-            return tabObject.getCssValue('color').then( function (fontColor) {
+            return tabObject.getCssValue('color').then(function (fontColor) {
                 // White font for active tabs
                 return fontColor === 'rgba(255, 255, 255, 1)';
             });
@@ -84,7 +84,7 @@ module.exports = Page.create({
 
     _tabText: {
         value: function (tabObject) {
-            return tabObject.getText().then( function (tabText) {
+            return tabObject.getText().then(function (tabText) {
                 return tabText;
             });
         }

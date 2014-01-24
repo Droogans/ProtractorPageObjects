@@ -13,9 +13,9 @@ module.exports = Page.create({
         value: function () {
             var _this = this;
             var rows = [];
-            return pollsTable.tblRows.then( function (rowPromises) {
+            return pollsTable.tblRows.then(function (rowPromises) {
                 _.forEach(rowPromises, function (rowPromise) {
-                    return rowPromise.then( function (row) {
+                    return rowPromise.then(function (row) {
                         rows.push(_this._getRow(row));
                     });
                 });
@@ -28,12 +28,12 @@ module.exports = Page.create({
         value: function (rowNumber) {
             // This functon is not zero-indexed (i.e., for the first row, use `getRowByNumber(1)`
             var _this = this;
-            return pollsTable.tblRows.then( function (pollsRows) {
+            return pollsTable.tblRows.then(function (pollsRows) {
                 if (rowNumber < 1 || rowNumber > pollsRows.length) {
                     _this.NoSuchRowException.thro('use row number 1 through ' + pollsRows.length);
                 }
-                return pollsRows[rowNumber - 1].then( function (rowPromise) {
-                    return rowPromise.then( function (rowObject) {
+                return pollsRows[rowNumber - 1].then(function (rowPromise) {
+                    return rowPromise.then(function (rowObject) {
                         return _this._getRow(rowObject);
                     });
                 });
@@ -61,20 +61,20 @@ module.exports = Page.create({
             // Because they are all within this same `_getRowLink` function,
             // no `this` keyword is required to reference them.
             function getLink() {
-                return row.findElement(this.by.css('td a')).then( function (linkPromise) {
+                return row.findElement(this.by.css('td a')).then(function (linkPromise) {
                     return linkPromise;
                 });
             }
             function getLinkText() {
-                return getLink().then( function (link) {
-                    return link.getText().then( function (linkText) {
+                return getLink().then(function (link) {
+                    return link.getText().then(function (linkText) {
                         return linkText;
                     });
                 });
             }
             function getLinkHref() {
-                return getLink().then( function (link) {
-                    return link.getAttribute('href').then( function (href) {
+                return getLink().then(function (link) {
+                    return link.getAttribute('href').then(function (href) {
                         return href;
                     });
                 });
@@ -91,8 +91,8 @@ module.exports = Page.create({
     _getRowVotes: {
         value: function (rowObject) {
             // Will return an integer representing the number of votes in the "Votes" column.
-            return rowObject.findElement(this.by.css('td.ng-binding')).then( function (votesPromise) {
-                return votesPromise.getText().then( function (votesText) {
+            return rowObject.findElement(this.by.css('td.ng-binding')).then(function (votesPromise) {
+                return votesPromise.getText().then(function (votesText) {
                     return parseInt(votesText, 10);
                 });
             });

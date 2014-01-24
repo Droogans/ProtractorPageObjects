@@ -15,9 +15,9 @@ module.exports = Page.create({
             // We resort to some messy page functions to accommodate for this.
             var _this = this;
             var columns = {};
-            return pollsTable.tblColumnHeadings.then( function (headingsObject) {
+            return pollsTable.tblColumnHeadings.then(function (headingsObject) {
                 _.forEach(headingsObject, function (heading) {
-                    return heading.getText().then( function (headingText) {
+                    return heading.getText().then(function (headingText) {
                         columns[headingText.toLowerCase()] = _this.getColumnByName(headingText);
                     });
                 });
@@ -64,7 +64,7 @@ module.exports = Page.create({
     _getColumnLinks: {
         value: function () {
             var links = [];
-            return pollsTable.tblRows.then( function (rows) {
+            return pollsTable.tblRows.then(function (rows) {
                 _.forEach(rows, function (row) {
                     // Here is a good thing in this otherwise bad example.
                     // Reuse the code for building row link objects in your columns.
@@ -78,7 +78,7 @@ module.exports = Page.create({
     _getColumnVotes: {
         value: function () {
             var votes = [];
-            return pollsTable.tblRows.then( function (rows) {
+            return pollsTable.tblRows.then(function (rows) {
                 _.forEach(rows, function (row) {
                     votes.push(pollsRows._getRowVotes(row));
                 });
