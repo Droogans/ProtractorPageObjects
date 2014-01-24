@@ -154,7 +154,7 @@ If you've written page objects before, you might have done so using java or ruby
 Here's a basic example, and one you'll see everywhere in this tutorial:
 
 ```javascript
-return this.lblResultCount.getText().then( function (countText) {
+return this.lblResultCount.getText().then(function (countText) {
     return parseInt(countText.split(' ')[0], 10);
 });
 ```
@@ -199,17 +199,17 @@ Unlike columns and tabs, we don't want to name our rows, since there's nothing w
 ```javascript
 
 it('should have data in the first row', function () {
-    rows.getRowByNumber(1).then( function (row) {
-        row.name.then( function (name) {
+    rows.getRowByNumber(1).then(function (row) {
+        row.name.then(function (name) {
             expect(name).toEqual('Do you support Battleground Texas');
         });
-        row.link.then( function (link) {
+        row.link.then(function (link) {
             expect(link).toEqual('/political-polls/do-you-support-battleground-texas')
         });
-        row.votes.then( function (votes) {
+        row.votes.then(function (votes) {
             expect(votes).toBeGreaterThan(0);
         });
-        row.isVisited().then( function (result) {
+        row.isVisited().then(function (result) {
             expect(result).toBe(false);
         });
     });
@@ -233,11 +233,11 @@ This works for now, but I don't like it because it treats the tabs like they're 
 
 ```javascript
 it('should have tabs', function () {
-    tabs.getTabs().then( function (tabs) {
-        tabs.profile.then( function (profileTab) {
+    tabs.getTabs().then(function (tabs) {
+        tabs.profile.then(function (profileTab) {
             profileTab.visit();
         });
-        tabs.polls.then( function (pollsTab) {
+        tabs.polls.then(function (pollsTab) {
             expect(pollsTab.name).toEqual('Polls');
         });
     });
