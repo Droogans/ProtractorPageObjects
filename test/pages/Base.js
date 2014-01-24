@@ -18,7 +18,7 @@ module.exports = Page.create({
 
     isLoggedIn: {
         value: function () {
-            return this.btnLogout.getText().then( function (buttonText) {
+            return this.btnLogout.getText().then(function (buttonText) {
                 return buttonText === 'Sign Out';
             });
         }
