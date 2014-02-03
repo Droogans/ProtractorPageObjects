@@ -8,7 +8,7 @@ module.exports = Page.create({
     },
 
     tblPolls: {
-        get: function() { return this.findElement(this.by.css('div.main-view')); }
+        get: function() { return this.findElement(this.by.css('div.blue-panel')); }
     },
 
     tblRows: {

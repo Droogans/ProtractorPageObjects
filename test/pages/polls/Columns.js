@@ -50,7 +50,7 @@ module.exports = Page.create({
             // A better way to have done this is to have a css selector get what we need for us:
             // return pollsTable.findElements(this.by.css('td[column-name="' + columnHeading  + '"]')).then...
             switch (columnHeading.toLowerCase()) {
-                case "name":
+                case "title":
                     return this._getColumnLinks();
                 case "votes":
                     return this._getColumnVotes();
