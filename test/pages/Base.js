@@ -9,16 +9,14 @@ module.exports = Page.create({
 
         // Let's look closer at this page element's code more closely:
         //
-        // get: function() {
-        //// `get:` is used by Astrolabe to signify a page element (or attribute).
+        // get: function()
+        //  - `get` is used to signify a page element (as an attribute).
         //
-        //     return this.findElement(
-        //// You can also write `findElements` for selecting a group of matching elements.
+        // return this.findElement
+        //  - You can also write `findElements` for selecting a group of matching elements.
         //
-        //         this.by.css('button.navbar-btn')
-        //// `by.css` is how we select things. See the chapter 1 README for more on CSS selectors.
-        //     );
-        // }
+        // this.by.css('button.navbar-btn')
+        //  - `by.css` is how we select things. See the chapter 1 README for more on CSS selectors.
     },
 
     lnkEpikVote: {
