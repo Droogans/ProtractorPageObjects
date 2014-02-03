@@ -11,16 +11,18 @@ exports.config = {
         './stories/*.js'
     ],
 
+    framework: 'mocha',
+
     // Capabilities to be passed to the webdriver instance.
     capabilities: {
         'browserName': 'firefox'
     },
 
-    // Options to be passed to Jasmine-node.
-    jasmineNodeOpts: {
-        isVerbose: true,
-        showColors: true,
-        includeStackTrace: true,
-        defaultTimeoutInterval: 10000
+    allScriptsTimeout: 30000,
+
+    // Options to be passed to mocha.
+    mochaOpts: {
+        reporter: 'spec',
+        slow: 10000
     }
 };
