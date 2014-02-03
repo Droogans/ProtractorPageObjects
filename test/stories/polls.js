@@ -3,11 +3,12 @@ var _ = require('lodash'),
     loginPage = require('../pages/login/Form'),
     pollsColumns = require('../pages/polls/Columns'),
     pollsRows = require('../pages/polls/Rows'),
-    pollsTable = require('../pages/polls/Table');
+    pollsTable = require('../pages/polls/Table'),
+    expect = require('./setupExpect').expect;
 
 describe('Polls table', function() {
 
-    it('beforeAll', function() {
+    before(function() {
         basePage.go();
         basePage.btnLogin.click();
         loginPage.login();
@@ -17,21 +18,21 @@ describe('Polls table', function() {
     });
 
     it('should have the right heading', function() {
-        expect(pollsTable.getHeading()).toEqual('Polls');
+        expect(pollsTable.getHeading()).to.eventually.equal('Polls');
     });
 
     describe('Polls rows', function() {
 
         // This test is for demonstration purposes only.
         // To highlight this, the `it` function has been
-        // changed to `xit`, marking it for skipping.
-        xit('should show some rows', function() {
+        // changed to `it.skip`, marking it for skipping.
+        it.skip('should show some rows', function() {
             // Get rows is a very slow call.
             // Perfer using `getRowByNumber` if possible.
             // There are some instances where all rows are needed,
             // so it is still shown here for demonstration purposes.
             pollsRows.getRows().then(function (rows) {
-                expect(rows.length).toBeGreaterThan(0);
+                expect(rows.length).to.be.above(0);
                 // You could continue here, using rows[0] to mimic the next test shown below.
             });
         });
@@ -41,13 +42,13 @@ describe('Polls table', function() {
                 // Uncomment this console.log statement to see how this row works:
                 // console.log(row);
                 row.link.href.then(function (rowHref) {
-                    var href = 'http://beta.epikvote.com/political-polls/do-you-support-battleground-texas';
-                    expect(rowHref).toEqual(href);
+                    var href = 'http://beta.epikvote.com/political-polls/view/merry-xmas';
+                    expect(rowHref).to.equal(href);
                 });
                 row.link.text.then(function (rowText) {
-                    expect(rowText).toEqual('Do you support Battleground Texas');
+                    expect(rowText).to.equal('Merry Xmas');
                 });
-                expect(row.votes).toEqual(12);
+                expect(row.votes).to.eventually.equal(0);
             });
         });
 
@@ -57,20 +58,20 @@ describe('Polls table', function() {
 
         // This is another slow test. Prefer using `getColumnByName` instead.
         // It is skipped unless you decide to examine it closer.
-        xit('should have some columns', function() {
+        it.skip('should have some columns', function() {
             pollsColumns.getColumns().then(function (columns) {
                 // Uncomment this line to see how columns get names,
                 // where rows get put into a simple list.
                 // console.log(columns);
                 pollsTable.tblColumnHeadings.then(function (headings) {
-                    expect(_.size(columns)).toEqual(headings.length);
+                    expect(_.size(columns)).to.equal(headings.length);
                 });
                 pollsTable.tblRows.then(function (rows) {
-                    columns.name.data.then(function (names) {
-                        expect(names.length).toEqual(rows.length);
+                    columns.title.data.then(function (titles) {
+                        expect(titles.length).to.equal(rows.length);
                     });
                     columns.votes.data.then(function (votes) {
-                        expect(votes.length).toEqual(rows.length);
+                        expect(votes.length).to.equal(rows.length);
                     });
                 });
             });
@@ -79,20 +80,19 @@ describe('Polls table', function() {
         it('should have specific data in each column', function() {
             // Since our table's HTML doesn't support column identifiers,
             // we're left with an awkward implementation of columns in our test.
-            pollsColumns.getColumnByName('Name').data.then(function (names) {
+            pollsColumns.getColumnByName('Title').data.then(function (titles) {
                 // Uncomment to see that these have the same links object as our rows.
-                // console.log(names);
-                expect(names[1].text).toEqual('Future of Womens Health Issues');
+                // console.log(titles);
+                expect(titles[1].text).to.eventually.equal('Is Google Evil?');
             });
             pollsColumns.getColumnByName('Votes').data.then(function (votes) {
-                expect(votes[1]).toEqual(22);
+                expect(votes[1]).to.eventually.equal(0);
             });
         });
 
     });
 
-
-    it('afterAll', function() {
+    after(function() {
         basePage.btnLogout.click();
     });
 

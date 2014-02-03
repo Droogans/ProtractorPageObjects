@@ -1,10 +1,11 @@
 var _ = require('lodash'),
     basePage = require('../pages/Base'),
-    loginPage = require('../pages/login/Form');
+    loginPage = require('../pages/login/Form'),
+    expect = require('./setupExpect').expect;
 
 describe('Tabs', function() {
 
-    it('beforeAll', function() {
+    before(function() {
         basePage.go();
         basePage.btnLogin.click();
         loginPage.login();
@@ -12,26 +13,26 @@ describe('Tabs', function() {
 
     it('should display two tabs', function() {
         basePage.getTabs().then(function (tabs) {
-            expect(_.size(tabs)).toEqual(2);
-            expect(tabs.profile.text).toEqual('Profile');
-            expect(tabs.profile.isActive()).toBe(false);
-            expect(tabs.polls.text).toEqual('Polls');
-            expect(tabs.polls.isActive()).toBe(false);
+            expect(_.size(tabs)).to.equal(2);
+            expect(tabs.profile.text).to.eventually.equal('Profile');
+            expect(tabs.profile.isActive()).to.eventually.be.false;
+            expect(tabs.polls.text).to.eventually.equal('Polls');
+            expect(tabs.polls.isActive()).to.eventually.be.false;
         });
     });
 
     it('should allow users to navigate by tabs', function() {
         basePage.getTabByName('Polls').then(function (pollsTab) {
             pollsTab.visit();
-            expect(pollsTab.isActive()).toBe(true);
+            expect(pollsTab.isActive()).to.eventually.be.true;
         });
         basePage.getTabByName('Profile').then(function (profileTab) {
             profileTab.visit();
-            expect(profileTab.isActive()).toBe(true);
+            expect(profileTab.isActive()).to.eventually.be.true;
         });
     });
 
-    it('afterAll', function () {
+    after(function () {
         basePage.btnLogout.click();
     });
 });
