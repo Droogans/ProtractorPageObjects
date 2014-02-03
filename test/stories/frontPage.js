@@ -1,22 +1,23 @@
 var basePage = require('../pages/Base'),
-    loginPage = require('../pages/login/Form.js')
+    loginPage = require('../pages/login/Form.js'),
+    expect = require('./setupExpect').expect;
 
 describe('Main page', function() {
 
     basePage.go();
 
     it('should be at the correct URL', function() {
-        expect(basePage.currentUrl).toEqual(browser.baseUrl + basePage.url);
+        expect(basePage.currentUrl).to.eventually.equal(browser.baseUrl + basePage.url);
     });
 
     it('should let me click through to the login page', function() {
         basePage.btnLogin.click();
-        expect(loginPage.currentUrl).toEqual(browser.baseUrl + loginPage.url);
+        expect(loginPage.currentUrl).to.eventually.equal(browser.baseUrl + loginPage.url);
     });
 
     it('should return to the front page when clicking the Epik Vote link', function() {
         basePage.lnkEpikVote.click();
-        expect(basePage.currentUrl).toEqual(browser.baseUrl + basePage.url);
+        expect(basePage.currentUrl).to.eventually.equal(browser.baseUrl + basePage.url);
     });
 
 });
