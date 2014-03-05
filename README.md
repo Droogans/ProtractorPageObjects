@@ -166,4 +166,4 @@ Run
 
     $> git checkout -b chapter-5 origin/chapter-5
 
-to skip ahead, or just [visit this branch in your browser](../chapter-5).
+to skip ahead, or just [visit this branch in your browser](../../tree/chapter-5).
