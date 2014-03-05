@@ -81,4 +81,4 @@ Run
 
     $> git checkout -b chapter-3 origin/chapter-3
 
-to skip ahead, or just [visit this branch in your browser](../chapter-3).
+to skip ahead, or just [visit this branch in your browser](../../tree/chapter-3).
