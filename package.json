@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "grunt": "~0.4.1",
-    "astrolabe": "~0.3.0-alpha",
+    "astrolabe": "~0.3.3-alpha",
     "glob": "~3.2.7",
     "lodash": "~2.3.0",
     "load-grunt-tasks": "~0.2.0",
