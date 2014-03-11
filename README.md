@@ -148,18 +148,6 @@ The second one is clearly better. Keep this in mind when creating custom objects
 
 I highly recommend requiring all custom objects to have reasonably managed exceptions for invalid use.
 
-## Installing exceptions
-
-The thing that you may notice is that this exception won't work yet, because you haven't downloaded it. If you go to [`package.json`](package.json), you'll see that a new dependency was added to the project: `exceptions`. To add this, just run
-
-```bash
-$> npm install .
-```
-
-To update your project's node modules.
-
->  **PROTIP**: if you ever want to add your own module to a project, like I did with exceptions, do so with `npm install --save-dev` followed by the package name.
-
 ## Continuing
 
 Run
