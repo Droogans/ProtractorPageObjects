@@ -126,7 +126,7 @@ Writing exceptions and throwing them are pretty simple. Just follow the example 
 
 Which would you rather see when viewing the output of a failed test?
 
-```bash
+```
 Failures:
 
   1) Tabs should allow users to navigate by tabs
@@ -136,7 +136,7 @@ Failures:
 
 or
 
-```bash
+```
 Failures:
 
   1) Tabs should allow users to navigate by tabs
