@@ -4,7 +4,7 @@ module.exports = Page.create({
     url: { value: '/home' },
 
     btnLogin: {
-        get: function() { return this.findElement(this.by.css('button.navbar-btn')); }
+        get: function() { return this.find.by.css('button.navbar-btn'); }
     },
 
     btnLogout: { 
@@ -13,7 +13,7 @@ module.exports = Page.create({
     },
 
     lnkEpikVote: {
-        get: function() { return this.findElement(this.by.css('a.epik-brand')); }
+        get: function() { return this.find.by.css('a.epik-brand'); }
     },
 
     isLoggedIn: {
