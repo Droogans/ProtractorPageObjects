@@ -63,7 +63,7 @@ Then run `source ~/.bash_profile` to update your system's path. Then try `which 
 
 It should look like this:
 
-```bash
+```
 $> which grunt
 /usr/local/bin/grunt
 ```
@@ -82,7 +82,7 @@ Once you've installed all the dependencies for this project, the next piece to g
 2. Figure out where you downloaded it (usually, this is in your home directory, under "Downloads").
 3. Start a selenium server with something like this command:
 
-```bash
+```
 $>: java -jar ~/Downloads/selenium-server-standalone-V.vv.x.jar
 ```
 
@@ -100,7 +100,7 @@ Once you run this command, it becomes a dedicated process that will use up your 
 
 If all works well, you should see the following output:
 
-```bash
+```
 $>: grunt test:mid
 Running "test:mid" (test) task
 
