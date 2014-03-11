@@ -12,17 +12,19 @@ This section is going to cover an important part of many sites: logging in.
 
 >  - First of all, *this is a bad idea*. But I understand that you might find yourself in this position. Whatever you do, [**do not check in passwords to repositories, public or private**](https://help.github.com/articles/remove-sensitive-data). For the sake of best practices, we'll cover a way to hide our passwords and use them in a semi-secured fashion.
 
-Since our site is "live" (for ease of access), we'll have to use a live production account. I will supply you a username and password seperately that you'll need to add to a file that's been ignored by the project: `test/credentials.json`. This file has to be added to the [.gitignore](.gitignore) to work, which I've already done.
+Since our site is "live" (for ease of access), we'll have to use a live production account. I will supply you a username and password seperately that you'll need to add to a file that's been ignored by the project: `test/secrets.js`. This file has to be added to the [.gitignore](.gitignore) to work, which I've already done.
 
 ## Storing passwords (semi) securely
 
-Using a text editor, create a new file in the `test` directory called `credentials.json`. Inside of it, copy and paste these credentials into it:
+Using a text editor, create a new file in the `test` directory called `secrets.js`. Inside of it, copy and paste these credentials into it:
 
-```json
-{
-    "username": "chris",
-    "password": "qwerty"
-}
+```js
+module.exports = {
+    credentials: {
+        username: 'chris',
+        password: 'qwerty'
+    }
+};
 ```
 
 When you do share your ignored passwords with others, do so in a secure manner.
@@ -31,15 +33,21 @@ The main point is, give out production credentials on a per-person basis, and do
 
 ## Using ignored passwords
 
-The trick to making this all work is replacing a line that would normally store our passwords with this:
+First, you need to `require` the ignored *secrets* file.
 
-```javascript
-params: {
-    login: grunt.file.readJSON('test/credentials.json')
-  }
+```js
+var secrets = require('./secrets');
 ```
 
-Now our protractor instance has our username and password at runtime without explicitly revealing what those are in the code.
+The trick to making this all work is replacing a line that would normally store our passwords with this:
+
+```js
+params: {
+    login: secrets.credentials
+}
+```
+
+Now our protractor instance has our username and password at runtime without explicitly revealing what those are in the code. We can also add more secrets to this file, as they are needed, perhaps for api keys, etc. Using this approach, we have one secrets file that contains all of our projects secrets.
 
 See the actual [protractor configuration file](test/protractor.conf.js) for more info about how to go about doing this.
 
