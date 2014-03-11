@@ -4,7 +4,7 @@ We're going to introduce a pretty complex topic by using a simple example.
 
 Here's an example: when you sign into a website where you are a regular user, perhaps you have two different tabs you can see. But when you sign in as an admin, you get an extra tab for managing some special features. I've seen these kinds of situations handled in the following way:
 
-```javascript
+```js
 if (user.isAdmin()) {
     tabs = getAdminTabs();
 } else {
@@ -26,13 +26,13 @@ A couple of things that are bad here:
 
 The solution is to do something like this:
 
-```javascript
+```js
 tabs = getTabs();
 ```
 
 Where `getTabs()` might look something like this:
 
-```javascript
+```js
 getTabs: {
     value: function () {
         var tabs = {};
@@ -57,7 +57,7 @@ All this does is:
 
 So now when we use the site as a regular user, our tabs look like this:
 
-```javascript
+```js
 {
     profile: <WebDriverElement>,
     polls: <WebDriverElement>
@@ -66,7 +66,7 @@ So now when we use the site as a regular user, our tabs look like this:
 
 And this same code will assign the special "admin" tabs as well:
 
-```javascript
+```js
 {
     profile: <WebDriverElement>,
     polls: <WebDriverElement>,
@@ -83,7 +83,7 @@ There are some neat things about using this "dynamic" model. We have a chance to
 
 Instead of returning just a normal tab, we can pass this `tabObject` into a constructor that builds us additional functionality:
 
-```javascript
+```js
 getTabs: {
     value: function () {
         var _this = this;
