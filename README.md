@@ -64,7 +64,7 @@ Think about what steps are involved in logging in:
 
 Since we have more than one action going on there, we should wrap this up into a function. A basic function would look like this:
 
-```javascript
+```js
 login: {
         value: function (username, password) {
             this.txtUsername.sendKeys(username);
