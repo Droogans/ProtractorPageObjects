@@ -86,7 +86,7 @@ To see a more in-depth login function, check [the source](test/pages/login/Form.
 
 See the test exercising the [login page](test/stories/login.js) for some basic examples of login tests.
 
-One final note: the setup for this test required that we manually navigate to the login page. We wrapped this in a `beofreAll` test that doesn't actually test anything. Now that we have to login to our site to continue testing it, we'll see more `beforeAll` tests. These are simply there to highlight the set up and, later, teardown.
+One final note: the setup for this test required that we manually navigate to the login page. We wrapped this in a `before` function that doesn't actually test anything. Now that we have to login to our site to continue testing it, we'll see more `before` tests. These are simply there to highlight the set up and, later, teardown (which would go inside of `after`).
 
 ## Continuing
 
