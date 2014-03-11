@@ -9,7 +9,7 @@ module.exports = Page.create({
     url: { value: '/home' },
 
     btnLogin: {
-        get: function() { return this.findElement(this.by.css('button.navbar-btn')); }
+        get: function() { return this.find.by.css('button.navbar-btn'); }
     },
 
     btnLogout: {
@@ -17,11 +17,11 @@ module.exports = Page.create({
     },
 
     lnkEpikVote: {
-        get: function() { return this.findElement(this.by.css('a.epik-brand')); }
+        get: function() { return this.find.by.css('a.epik-brand'); }
     },
 
     tblTabs: {
-        get: function() { return this.findElements(this.by.css(tblTabsCss)); }
+        get: function() { return this.find.all.by.css(tblTabsCss); }
     },
 
     getTabs: {
@@ -51,8 +51,8 @@ module.exports = Page.create({
             var _this = this;
             var tabHref = tabName.toLowerCase();
             var tabCss = tblTabsCss + '[href$="' + tabHref  + '"]';
-            // We use `this.findElements` because it might return an empty list
-            return this.findElements(this.by.css(tabCss)).then(function (tabs) {
+            // We use `this.find.all` because it might return an empty list
+            return this.find.all.by.css(tabCss).then(function (tabs) {
                 if (tabs.length) {
                     // If there is a list, we accept the first one as our tab
                     return _this._getTab(tabs[0]);
@@ -107,7 +107,7 @@ module.exports = Page.create({
     },
 
     NoSuchTabException: {
-        get: function() { return new exceptions.Exception('No such tab'); }
+        get: function() { return this.exception('No such tab'); }
     }
 
 });

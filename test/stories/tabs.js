@@ -22,10 +22,12 @@ describe('Tabs', function() {
     });
 
     it('should allow users to navigate by tabs', function() {
+        // Why is the 'Polls' page so slow? Comment out this test to see.
         basePage.getTabByName('Polls').then(function (pollsTab) {
             pollsTab.visit();
             expect(pollsTab.isActive()).to.eventually.be.true;
         });
+        // Leave this test uncommented. It runs perfectly fast.
         basePage.getTabByName('Profile').then(function (profileTab) {
             profileTab.visit();
             expect(profileTab.isActive()).to.eventually.be.true;

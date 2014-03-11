@@ -4,27 +4,27 @@ module.exports = Page.create({
     url: { value: '/login' },
 
     btnLogin: {
-        get: function() { return this.findElement(this.by.css('button[type="submit"]')); }
+        get: function() { return this.find.by.css('button[type="submit"]'); }
     },
 
     lblLoginError: {
-        get: function() { return this.findElement(this.by.css('div.alert')); }
+        get: function() { return this.find.by.css('div.alert'); }
     },
 
     lnkForgotPassword: {
-        get: function() { return this.findElement(this.by.css('a[href="/forgotPassword"]')); }
+        get: function() { return this.find.by.css('a[href="/forgotPassword"]'); }
     },
 
     lnkCreateAccount: {
-        get: function() { return this.findElement(this.by.css('a[href="/signup"]')); }
+        get: function() { return this.find.by.css('a[href="/signup"]'); }
     },
 
     txtUsername: {
-        get: function() { return this.findElement(this.by.css('#email')); }
+        get: function() { return this.find.by.css('#email'); }
     },
 
     txtPassword: {
-        get: function() { return this.findElement(this.by.css('#password')); }
+        get: function() { return this.find.by.css('#password'); }
     },
 
     login: {
