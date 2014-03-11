@@ -100,7 +100,7 @@ module.exports = Page.create({
     },
 
     NoSuchRowException: {
-        get: function() { return new exceptions.Exception('No such row number'); }
+        get: function() { return this.exception('No such row number'); }
     }
 
 });

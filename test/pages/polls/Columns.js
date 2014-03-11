@@ -88,7 +88,7 @@ module.exports = Page.create({
     },
 
     NoSuchColumnException: {
-        get: function() { return new exceptions.Exception('No such column'); }
+        get: function() { return this.exception('No such column'); }
     }
 
 });
