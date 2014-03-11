@@ -47,7 +47,7 @@ Usually, you don't want to have node modules installed *globally*, meaning they 
 
 And then install this project's dependencies locally:
 
-    npm install .
+    npm install
 
 You will have all dependencies in this project's [`package.json`](./package.json) file installed in your `node_modules` file.
 
@@ -107,10 +107,13 @@ Running "test:mid" (test) task
 Running "shell:protractor" (shell) task
 Command: protractor test/protractor.conf.js
 Using the selenium server at http://localhost:4444/wd/hub
-.
 
-Finished in 1.339 seconds
-1 test, 1 assertion, 0 failures
+
+  Main page
+    ✓ should be at the correct URL 
+
+
+  1 passing (652ms)
 
 
 Done, without errors.
