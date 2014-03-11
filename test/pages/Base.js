@@ -5,7 +5,7 @@ module.exports = Page.create({
 
     // The name of our page elements go here
     btnLogin: {
-        get: function() { return this.findElement(this.by.css('button.navbar-btn')); }
+        get: function() { return this.find.by.css('button.navbar-btn'); }
 
         // Let's look closer at this page element's code more closely:
         //
@@ -20,7 +20,7 @@ module.exports = Page.create({
     },
 
     lnkEpikVote: {
-        get: function() { return this.findElement(this.by.css('a.epik-brand')); }
+        get: function() { return this.find.by.css('a.epik-brand'); }
     }
 
 
