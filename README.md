@@ -47,7 +47,7 @@ params: {
 }
 ```
 
-Now our protractor instance has our username and password at runtime without explicitly revealing what those are in the code. We can also add more secrets to this file, as they are needed, perhaps for api keys, etc. Using this approach, we have one secrets file that contains all of our projects secrets.
+Now our protractor instance has our username and password at runtime without explicitly revealing what those are in the code. We can also add more secrets to this file, as they are needed, perhaps for api keys, etc. Using this approach, we have one secrets file that contains all of our project's secrets.
 
 See the actual [protractor configuration file](test/protractor.conf.js) for more info about how to go about doing this.
 
