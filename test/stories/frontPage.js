@@ -1,4 +1,4 @@
-var basePage = require('../pages/Base');
+var basePage = require('../pages/base');
 var expect = require('./setupExpect').expect;
 
 describe('Main page', function() {
