@@ -1,5 +1,4 @@
 var _ = require('lodash'),
-    exceptions = require('exceptions'),
     Page = require('astrolabe').Page;
 
 // This is used by both `getTabByName` and `tblTabs`.

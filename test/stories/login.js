@@ -1,5 +1,5 @@
-var basePage = require('../pages/Base.js'),
-    loginPage = require('../pages/login/Form.js'),
+var basePage = require('../pages/base.js'),
+    loginPage = require('../pages/login/form.js'),
     expect = require('./setupExpect').expect;
 
 describe('Login page', function(){
@@ -30,6 +30,7 @@ describe('Login page', function(){
     });
 
     it('should allow a user to login', function() {
+        browser.debugger();
         loginPage.login();
         expect(basePage.isLoggedIn()).to.eventually.be.true;
     });
