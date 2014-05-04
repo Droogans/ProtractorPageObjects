@@ -1,5 +1,5 @@
-var basePage = require('../pages/Base'),
-    loginPage = require('../pages/login/Form.js'),
+var basePage = require('../pages/base'),
+    loginPage = require('../pages/login/form'),
     expect = require('./setupExpect').expect;
 
 describe('Main page', function() {

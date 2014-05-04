@@ -1,9 +1,9 @@
 var _ = require('lodash'),
-    basePage = require('../pages/Base'),
-    loginPage = require('../pages/login/Form'),
-    pollsColumns = require('../pages/polls/Columns'),
-    pollsRows = require('../pages/polls/Rows'),
-    pollsTable = require('../pages/polls/Table'),
+    basePage = require('../pages/base'),
+    loginPage = require('../pages/login/form'),
+    pollsColumns = require('../pages/polls/columns'),
+    pollsRows = require('../pages/polls/rows'),
+    pollsTable = require('../pages/polls/table'),
     expect = require('./setupExpect').expect;
 
 describe('Polls table', function() {

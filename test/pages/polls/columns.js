@@ -1,8 +1,7 @@
 var _ = require('lodash'),
     Page = require('astrolabe').Page,
-    exceptions = require('exceptions'),
-    pollsRows = require('./Rows'),
-    pollsTable = require('./Table');
+    pollsRows = require('./rows'),
+    pollsTable = require('./table');
 
 module.exports = Page.create({
     url: { value: '/political-polls' },

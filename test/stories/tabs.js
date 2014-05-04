@@ -1,6 +1,6 @@
 var _ = require('lodash'),
-    basePage = require('../pages/Base'),
-    loginPage = require('../pages/login/Form'),
+    basePage = require('../pages/base'),
+    loginPage = require('../pages/login/form'),
     expect = require('./setupExpect').expect;
 
 describe('Tabs', function() {

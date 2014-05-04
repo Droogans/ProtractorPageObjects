@@ -1,6 +1,6 @@
 var grunt = require('grunt');
 
-var credentials = grunt.file.readJSON('test/credentials.json');
+var secret = require('./secrets');
 
 exports.config = {
     // The address of a running selenium server. If this is specified,
@@ -23,7 +23,7 @@ exports.config = {
     },
 
     params: {
-        login: credentials
+        login: secret.credentials
     },
 
     allScriptsTimeout: 30000,
