@@ -1,5 +1,5 @@
 var grunt = require('grunt');
-var secrets = require('./secrets');
+var secret = require('./secrets');
 
 exports.config = {
     // The address of a running selenium server. If this is specified,
@@ -22,7 +22,7 @@ exports.config = {
     },
 
     params: {
-        login: secrets.credentials
+        login: secret.credentials
     },
 
     allScriptsTimeout: 30000,
