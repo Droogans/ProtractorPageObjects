@@ -8,22 +8,23 @@ Here's what our project looks like right now:
 $:> tree test
 test
 ├── pages
-│   ├── Base.js
 │   ├── login
-│   │   └── Form.js
+│   │   └── form.js
 │   ├── polls
-│   │   ├── Columns.js
-│   │   ├── Rows.js
-│   │   └── Table.js
+│   │   ├── columns.js
+│   │   ├── rows.js
+│   │   └── table.js
 │   └── profile
-│       ├── Basic.js
-│       ├── Politics.js
-│       └── Social.js
+│       ├── basic.js
+│       ├── politics.js
+│       └── social.js
 ├── protractor.conf.js
+├── secrets.js
 └── stories
-    └── frontPage.js
+    ├── frontPage.js
+    └── setupExpect.js
 
-5 directories, 10 files
+5 directories, 11 files
 ```
 > **PROTIP**: You can install `tree` via `brew install tree` for mac, or `sudo apt-get install tree` in Linux.
 
