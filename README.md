@@ -5,7 +5,6 @@
 	- [NPM](#npm)
 - [I have some experience using Node.](#i-have-some-experience-using-node)
 	- [Selenium](#selenium)
-	- [Grunt](#grunt)
 - [I have no idea how to write page objects.](#i-have-no-idea-how-to-write-page-objects)
 - [I haven't written page objects in Javascript.](#i-haven't-written-page-objects-in-javascript)
 - [Deconstructing a page.](#deconstructing-a-page)
@@ -43,32 +42,13 @@ Node projects are all self-contained. You keep their dependencies (listed in the
 
 Usually, you don't want to have node modules installed *globally*, meaning they are available everywhere. Some exceptions are listed below. Run this command to get command-line access to these applications:
 
-    npm install -g grunt-cli protractor jshint karma
+    npm install -g protractor mocha
 
 And then install this project's dependencies locally:
 
     npm install
 
 You will have all dependencies in this project's [`package.json`](./package.json) file installed in your `node_modules` file.
-
-Double check that your `$PATH` variable is set up correctly for node:
-
-    which grunt
-
-If you don't see anything, you need to edit your `~/.bashrc` or `~/.bash_profile` and add this line:
-
-    PATH=$PATH:/usr/local/share/npm/bin
-
-Then run `source ~/.bash_profile` to update your system's path. Then try `which grunt` again.
-
-It should look like this:
-
-```
-$> which grunt
-/usr/local/bin/grunt
-```
-
-> **PROTIP**: If this still isn't working, you may have added the wrong location to your `PATH` variable. Check out [this suggestion](http://stackoverflow.com/a/16635816/881224) to see what the correct `PATH` entry should be.
 
 ## I have some experience using Node.
 
@@ -92,20 +72,15 @@ $>: java -jar ~/Downloads/selenium-server-standalone-V.vv.x.jar
 
 Once you run this command, it becomes a dedicated process that will use up your terminal. Just leave it be and open a new terminal window to continue working.
 
-### Grunt
-
-[`grunt`](http://gruntjs.com/) is a task runner for node projects. If you've used ruby, it's like `rake`. If you're coming from python, it's a lot like `paver`. If you're brand new to programming, it's a tool that describes complex actions, and shortens them into easy to type one-liners. The one we'll use is
-
-    grunt test:mid
-
 If all works well, you should see the following output:
 
 ```
-$>: grunt test:mid
-Running "test:mid" (test) task
+$>: protractor test/protractor.conf.js
 
-Running "shell:protractor" (shell) task
-Command: protractor test/protractor.conf.js
+------------------------------------
+PID: 15185 (capability: firefox #1)
+------------------------------------
+
 Using the selenium server at http://localhost:4444/wd/hub
 
 
@@ -113,13 +88,8 @@ Using the selenium server at http://localhost:4444/wd/hub
     ✓ should be at the correct URL 
 
 
-  1 passing (652ms)
-
-
-Done, without errors.
+  1 passing (2s)
 ```
-
-> **PROTIP**: if you get an error, and your traceback is really short and unhelpful, try running `protractor test/protractor.conf.js` directly. You'll tend to get an exact location of syntax errors that way.
 
 ## I have no idea how to write page objects.
 
