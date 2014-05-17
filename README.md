@@ -36,14 +36,14 @@ The main point is, give out production credentials on a per-person basis, and do
 First, you need to `require` the ignored *secrets* file.
 
 ```js
-var secrets = require('./secrets');
+var secret = require('./secrets');
 ```
 
 The trick to making this all work is replacing a line that would normally store our passwords with this:
 
 ```js
 params: {
-    login: secrets.credentials
+    login: secret.credentials
 }
 ```
 
@@ -66,12 +66,12 @@ Since we have more than one action going on there, we should wrap this up into a
 
 ```js
 login: {
-        value: function (username, password) {
-            this.txtUsername.sendKeys(username);
-            this.txtPassword.sendKeys(password);
-            this.btnLogin.click();
-        }
+    value: function (username, password) {
+        this.txtUsername.sendKeys(username);
+        this.txtPassword.sendKeys(password);
+        this.btnLogin.click();
     }
+}
 ```
 
 This is a good start. Here are some improvements that are quite common, and can be used in other situations as well:
