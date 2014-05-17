@@ -29,12 +29,8 @@ module.exports = Page.create({
 
     login: {
         value: function (username, password) {
-            if (username === undefined) {
-                username = this.driver.params.login.username;
-            }
-            if (password === undefined) {
-                password = this.driver.params.login.password;
-            }
+            username = username === undefined ? this.driver.params.login.username : username;            
+            password = password === undefined ? this.driver.params.login.password : password;
             this.txtUsername.clear();
             this.txtUsername.sendKeys(username);
             this.txtPassword.clear();
