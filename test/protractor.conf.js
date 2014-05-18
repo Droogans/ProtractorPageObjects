@@ -1,5 +1,3 @@
-var grunt = require('grunt');
-
 var secret = require('./secrets');
 
 exports.config = {
