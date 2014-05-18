@@ -16,15 +16,15 @@ This chapter also includes more of them as well.
 
 ## A closer look at promises
 
-Take a look at the annotated source of the [`getHeading()`](test/pages/polls/Table.js) method to get a better understanding of how Selenium handles promises. We will be constructing a custom object using this model, and it will return a promise to us.
+Take a look at the annotated source of the [`getHeading()`](test/pages/polls/table.js) method to get a better understanding of how Selenium handles promises. We will be constructing a custom object using this model, and it will return a promise to us.
 
 **Q**: *Why don't page fields (`btnSignOut`, `lnkEpikVote`, etc.) need to be unwrapped?*
 
->  - Astrolabe provides utilities that account for the unwrapping step, so you don't have to write it out.
+>  - Selenium does not require `findElement` function calls to unwrap. However, `findElements` resolves to a list of web elements, so call `.then` on the result first.
 
-**Q**: *Why don't you have to unwrap promises that are used in a test's `expect` function?*
+**Q**: *What does the `eventually` part mean in a test's `expect` function?*
 
->  - Jasmine knows how to handle promises passed into `expect`, and it will unwrap it one layer for you.
+>  - Chai's `expect` has a property, `eventually`, that knows how to unwrap a promise exactly one layer for you.
 
 **Q**: *How do I know if a promise is done being "unwrapped"?*
 
@@ -43,7 +43,7 @@ Take a look at the annotated source of the [`getHeading()`](test/pages/polls/Tab
 >  - Replace your current console.log statement with this:
 
 ```javascript
-possiblePromiseObject.then( function (anotherPossiblePromise) {
+possiblePromiseObject.then(function (anotherPossiblePromise) {
     console.log(anotherPossiblePromise);
 });
 ```
@@ -61,7 +61,7 @@ I highly recommend requiring all custom objects to return promises from their me
 Take this code, for instance:
 
 ```javascript
-colums.getColumnByName('Votes').then( function (votesColumn) {
+colums.getColumnByName('Votes').then(function (votesColumn) {
     console.log(votesColumn);
 });
 ```
@@ -83,7 +83,8 @@ We want all of the properties of the column to formatted like this:
 And not like this:
 
 ```javascript
-{ name: "Votes",
+{
+  name: "Votes",
   data: [12, 22, 32]
 }
 ```
@@ -98,20 +99,16 @@ However, there is a huge difference between how these were coded.
 
 ## A good example
 
-[Rows](test/pages/polls/Rows.js) has a very good example of how to implement row objects in a table.
+[Rows](test/pages/polls/rows.js) has a very good example of how to implement row objects in a table.
 
 This is because all rows support numbered rows, which makes them easy to map to a page object.
 
 ## An anti-pattern
 
-To bring attention to what can happen when a page's HTML is insufficient for creating page objects, I've shown some ways [not to define column objects](test/pages/polls/Columns.js).
+To bring attention to what can happen when a page's HTML is insufficient for creating page objects, I've shown some ways [not to define column objects](test/pages/polls/columns.js).
 
 A common code smell is passing around text parameters into function to determine what you're going to do with some function.
 
 ## Continuing
 
-Run
-
-    $> git checkout -b chapter-6 origin/chapter-6
-
-to skip ahead, or just [visit this branch in your browser](../chapter-6).
+Chapter 6 will likely not happen until I set up a standalone `github-pages` branch to create a website better suited for testing all common web components.
