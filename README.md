@@ -5,10 +5,11 @@ We're going to introduce a pretty complex topic by using a simple example.
 Here's an example: when you sign into a website where you are a regular user, perhaps you have two different tabs you can see. But when you sign in as an admin, you get an extra tab for managing some special features. I've seen these kinds of situations handled in the following way:
 
 ```js
+var tabs;
 if (user.isAdmin()) {
-    tabs = getAdminTabs();
+    tabs = base.adminTabs;
 } else {
-    tabs = getTabs();
+    tabs = base.tabs;
 }
 ```
 
@@ -16,7 +17,7 @@ A couple of things that are bad here:
 
 1. What does `isAdmin()` do?
   - We'll have to maintain that function's logic to keep this up.
-2. What's the difference between `getAdminTabs()` and `getTabs()`?
+2. What's the difference between `adminTabs` and `tabs`?
   - I bet the logic is ~80% the same between them.
   - We'll have to maintain them seperately to keep this up.
 3. Are there any other roles?
@@ -27,19 +28,19 @@ A couple of things that are bad here:
 The solution is to do something like this:
 
 ```js
-tabs = getTabs();
+tabs = base.tabs;
 ```
 
-Where `getTabs()` might look something like this:
+Where `tabs()` might look something like this:
 
 ```js
-getTabs: {
-    value: function () {
+tabs: {
+    get: function () {
         var tabs = {};
-        return this.tblTabs.then( function (tabsTable) {
-            _.forEach(tabsTable, function (tab) {
-                return tab.getText().then( function (name) {
-                    tabs[name.toLowerCase()] = tab;
+        return this.tblTabs.then(function (tabElements) {
+            _.forEach(tabElements, function (tabElement) {
+                return tab.getText().then(function (name) {
+                    tabs[name] = tab;
                 });
             });
             return tabs;
@@ -81,17 +82,18 @@ And this same code will assign the special "admin" tabs as well:
 
 There are some neat things about using this "dynamic" model. We have a chance to intercept these tabs when we assign them to our `tabs` object, and give them special functionality.
 
-Instead of returning just a normal tab, we can pass this `tabObject` into a constructor that builds us additional functionality:
+Instead of returning just a normal tab, we can pass this result of `tabFromElement`, a constructor builds us additional functionality.
 
 ```js
-getTabs: {
-    value: function () {
-        var _this = this;
+tabs: {
+    get: function () {
+        var page = this;
         var tabs = {};
-        return this.tblTabs.then( function (tabsTable) {
-            _.forEach(tabsTable, function (tab) {
-                return tab.getText().then( function (tabText) {
-                    tabs[tabText.toLowerCase()] = _this._getTab(tab);
+        return this.tblTabs.then(function (tabElements) {
+            _.forEach(tabElements, function (tabElement) {
+                var tab = page.tabFromElement(tabElement);
+                return tab.name().then(function (name) {
+                    tabs[name] = page.tabFromElement(tab);
                 });
             });
             return tabs;
@@ -99,14 +101,13 @@ getTabs: {
     }
 },
 
-_getTab: {
-    value: function (tabObject) {
-        var _this = this;
+tabFromElement: {
+    value: function (tabElement) {
+        var page = this;
         return {
-            // Skip to the source to see how these custom functions are implemented.
-            text: this._tabText(tabObject),
-            isActive: function () { return _this._tabIsActive(tabObject); },
-            visit: function () { return tabObject.click();  }
+            text: function () { this.tabTextFromElement(tabElement); },
+            isActive: function () { return page.tabIsActiveFromElement(tabElement); },
+            visit: function () { return tabElement.click();  }
         };
     }
 }
@@ -114,11 +115,11 @@ _getTab: {
 
 ## An example of this
 
-See the code for the [tabs on the base page](test/pages/Base.js), and their [respective tests](test/stories/tabs.js) for a more in-depth look at a working example.
+See the code for the [tabs on the base page](test/pages/base.js), and their [respective tests](test/stories/tabs.js) for a more in-depth look at a working example.
 
 ## Exceptions
 
-If you read through the source code for the `getTabByName` function, you may have noticed an else statement at the end that called `NoSuchTabException`. This happened since all the tabs had been searched, and none were found matching the tab the user asked for.
+If you read through the source code for the `tab` function, you may have noticed an else statement at the end that called `NoSuchTabException`. This happened since all the tabs had been searched, and none were found matching the tab the user asked for.
 
 Writing exceptions and throwing them are pretty simple. Just follow the example and you'll be fine.
 
@@ -147,6 +148,8 @@ Failures:
 The second one is clearly better. Keep this in mind when creating custom objects.
 
 I highly recommend requiring all custom objects to have reasonably managed exceptions for invalid use.
+
+Be sure to add tests for these exceptions. Using chai's `expect(cond).to.be.rejectedWith(msg)` makes this easy.
 
 ## Continuing
 

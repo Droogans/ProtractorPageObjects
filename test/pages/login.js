@@ -1,30 +1,32 @@
+var base = require('./base');
+
 var Page = require('astrolabe').Page;
 
 module.exports = Page.create({
     url: { value: '/login' },
 
     btnLogin: {
-        get: function() { return this.find.by.css('button[type="submit"]'); }
+        get: function () { return $('button[type="submit"]'); }
     },
 
     lblLoginError: {
-        get: function() { return this.find.by.css('div.alert'); }
+        get: function () { return $('div.alert'); }
     },
 
     lnkForgotPassword: {
-        get: function() { return this.find.by.css('a[href="/forgotPassword"]'); }
+        get: function () { return $('a[href="/forgotPassword"]'); }
     },
 
     lnkCreateAccount: {
-        get: function() { return this.find.by.css('a[href="/signup"]'); }
+        get: function () { return $('a[href="/signup"]'); }
     },
 
     txtUsername: {
-        get: function() { return this.find.by.css('#email'); }
+        get: function () { return $('#email'); }
     },
 
     txtPassword: {
-        get: function() { return this.find.by.css('#password'); }
+        get: function () { return $('#password'); }
     },
 
     login: {
@@ -36,6 +38,14 @@ module.exports = Page.create({
             this.txtPassword.clear();
             this.txtPassword.sendKeys(password);
             this.btnLogin.click();
+        }
+    },
+
+    logout: {
+        // Even though the logout button is in the base page, since it has to do
+        // with authenticating, it's easier to remember where it is if it's placed here.
+        value: function () {
+            base.btnLogout.click();
         }
     }
 

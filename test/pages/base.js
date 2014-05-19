@@ -1,65 +1,39 @@
 var _ = require('lodash'),
     Page = require('astrolabe').Page;
 
-// This is used by both `getTabByName` and `tblTabs`.
-var tblTabsCss = 'ul.navbar-nav li[ng-show$="loggedIn"] a';
-
 module.exports = Page.create({
     url: { value: '/home' },
 
+    cssTabs: {
+        // This is used by both `getTabByName` and `tblTabs`.
+        get: function () { return 'ul.navbar-nav li[ng-show$="loggedIn"] a'; }
+    },
+
     btnLogin: {
-        get: function() { return this.find.by.css('button.navbar-btn'); }
+        get: function () { return $('button.navbar-btn'); }
     },
 
     btnLogout: {
-        get: function() { return this.btnLogin; }
+        get: function () { return this.btnLogin; }
     },
 
     lnkEpikVote: {
-        get: function() { return this.find.by.css('a.epik-brand'); }
+        get: function () { return $('a.epik-brand'); }
     },
 
     tblTabs: {
-        get: function() { return this.find.all.by.css(tblTabsCss); }
+        get: function () { return $$(this.cssTabs); }
     },
 
-    getTabs: {
+    goLogin: {
         value: function () {
-            // First, we need to create a reference to `this`.
-            // Since we're using functions inside of other functions,
-            // the scope of the `this` keyword changes.
-            // By copying the original scope, we can use it as we'd expect.
-            var _this = this;
-            var tabs = {};
-            return this.tblTabs.then(function (tabsTable) {
-                _.forEach(tabsTable, function (tab) {
-                    return tab.getText().then(function (tabText) {
-                        // Here, we use the original `_this` from above.
-                        // Without it, we'd be referring to the `this`
-                        // we got when we created `tab.getText().then()`
-                        tabs[tabText.toLowerCase()] = _this._getTab(tab);
-                    });
-                });
-                return tabs;
-            });
+            this.btnLogin.click();
         }
     },
 
-    getTabByName: {
-        value: function (tabName) {
-            var _this = this;
-            var tabHref = tabName.toLowerCase();
-            var tabCss = tblTabsCss + '[href$="' + tabHref  + '"]';
-            // We use `this.find.all` because it might return an empty list
-            return this.find.all.by.css(tabCss).then(function (tabs) {
-                if (tabs.length) {
-                    // If there is a list, we accept the first one as our tab
-                    return _this._getTab(tabs[0]);
-                } else {
-                    // otherwise, the list is empty, and there is no such tab
-                    _this.NoSuchTabException.thro(tabName);
-                }
-            });
+    goHome: {
+        value: function () {
+            this.lnkEpikVote.click();
         }
     },
 
@@ -71,42 +45,82 @@ module.exports = Page.create({
         }
     },
 
-    _getTab: {
+    tabs: {
+        get: function () {
+            // First, we need to create a reference to `this`.
+            // Since we're using functions inside of other functions,
+            // the scope of the `this` keyword changes.
+            // By copying the original scope, we can use it as we'd expect.
+            var page = this;
+            var tabs = {};
+            return this.tblTabs.then(function (tabElements) {
+                _.forEach(tabElements, function (tabElement) {
+                    var tab = page.tabFromElement(tabElement);
+                    return tab.name().then(function (name) {
+                        // Here, we use the original `page` from above.
+                        // Without it, we'd be referring to the `this`
+                        // we got from above.
+                        tabs[name] = tab;
+                    });
+                });
+                return tabs;
+            });
+        }
+    },
+
+    tab: {
+        value: function (tabName) {
+            var page = this;
+            var tabHref = tabName.toLowerCase();
+            var tabCss = this.cssTabs + '[href$="' + tabHref  + '"]';
+            // We use `this.find.all` because it might return an empty list
+            return $$(tabCss).then(function (tabs) {
+                if (tabs.length) {
+                    // If there is a list, we accept the first one as our tab
+                    return page.tabFromElement(tabs[0]);
+                } else {
+                    // otherwise, the list is empty, and there is no such tab
+                    page.NoSuchTabException.thro(tabName);
+                }
+            });
+        }
+    },
+
+    tabFromElement: {
         // We prepend this function with an underscore to serve as an
         // indicator/warning that, although this function is public,
         // it's really only supposed to be used internally.
         // If you want to *actually* get a tab, use `getTabs`,
         // which is the "friendly" public function.
-        value: function (tabObject) {
-            var _this = this;
+        value: function (tabElement) {
+            var page = this;
             return {
-                text: this._tabText(tabObject),
-                // `visit` and `isActive` are functions. This is how you make one.
-                isActive: function () { return _this._tabIsActive(tabObject); },
-                visit: function () { return tabObject.click();  }
+                name: function () { return page.tabNameFromElement(tabElement); },
+                isActive: function () { return page.tabIsActiveFromElement(tabElement); },
+                visit: function () { tabElement.click(); }
             };
         }
     },
 
-    _tabIsActive: {
-        value: function (tabObject) {
-            return tabObject.getCssValue('color').then(function (fontColor) {
+    tabIsActiveFromElement: {
+        value: function (tabElement) {
+            return tabElement.getCssValue('color').then(function (fontColor) {
                 // White font for active tabs
                 return fontColor === 'rgba(255, 255, 255, 1)';
             });
         }
     },
 
-    _tabText: {
-        value: function (tabObject) {
-            return tabObject.getText().then(function (tabText) {
-                return tabText;
+    tabNameFromElement: {
+        value: function (tabElement) {
+            return tabElement.getText().then(function (name) {
+                return name;
             });
         }
     },
 
     NoSuchTabException: {
-        get: function() { return this.exception('No such tab'); }
+        get: function () { return this.exception('No such tab'); }
     }
 
 });
