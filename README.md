@@ -67,13 +67,11 @@ I cannot advocate using this system more. It should a requirement for all propos
 
 ## Our first page
 
-Let's jump to the annotated source of the [base page](./test/pages/Base.js) to see the different elements and methods available there.
+Let's jump to the annotated source of the [base page](./test/pages/base.js) to see the different elements and methods available there.
 
 ## Our first test
 
 Our [next test](./test/stories/frontPage.js) is almost identical to our first one. We simply make sure we can reach the login page by clicking the "Sign in" button, and that we return to the front page by clicking the Epik Vote link.
-
-Something important in that test: you can switch between your various pages very freely, referring to as many different pages as you need to during your tests. Just make sure that you're referring to the correct page at the correct time.
 
 ## Continuing
 
