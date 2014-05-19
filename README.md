@@ -58,6 +58,18 @@ Ok. Make sure you have Protractor available globally. Use `npm install -g protra
 
 Once you've installed all the dependencies for this project, the next piece to getting set up is to get a selenium webserver running on your system. Here's how to do this:
 
+For mac, this is easy:
+
+```
+$>: brew install selenium-server-standalone
+...
+$>: selenium-server
+```
+
+Once you run this command, it becomes a dedicated process that will use up your terminal. Just leave it be and open a new terminal window to continue working.
+
+For everyone else:
+
 1. Download the [`selenium-server-standalone.jar`](https://code.google.com/p/selenium/downloads/list) file found on this page.
 2. Figure out where you downloaded it (usually, this is in your home directory, under "Downloads").
 3. Start a selenium server with something like this command:
@@ -70,9 +82,7 @@ $>: java -jar ~/Downloads/selenium-server-standalone-V.vv.x.jar
 
 > - Another note: it may be helpful for you to create an [alias](http://askubuntu.com/a/17537/159262) to this command, as you'll use it frequently.
 
-Once you run this command, it becomes a dedicated process that will use up your terminal. Just leave it be and open a new terminal window to continue working.
-
-If all works well, you should see the following output:
+If all works well, you should see the following output when you run the actual protractor tests:
 
 ```
 $>: protractor test/protractor.conf.js
@@ -85,7 +95,7 @@ Using the selenium server at http://localhost:4444/wd/hub
 
 
   Main page
-    ✓ should be at the correct URL 
+    ✓ should be at the correct URL
 
 
   1 passing (2s)
