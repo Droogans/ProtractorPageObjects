@@ -5,26 +5,21 @@ This chapter will focus on where we will put our page objects, and how we'll kee
 Here's what our project looks like right now:
 
 ```
-$:> tree test
-test
-├── pages
-│   ├── login
-│   │   └── form.js
-│   ├── polls
+$:> tree test/pages/
+test/pages/
+├── base.js
+├── login.js
+├── polls
+│   ├── table
 │   │   ├── columns.js
-│   │   ├── rows.js
-│   │   └── table.js
-│   └── profile
-│       ├── basic.js
-│       ├── politics.js
-│       └── social.js
-├── protractor.conf.js
-├── secrets.js
-└── stories
-    ├── frontPage.js
-    └── setupExpect.js
+│   │   └── rows.js
+│   └── table.js
+└── profile
+    ├── basic.js
+    ├── politics.js
+    └── social.js
 
-5 directories, 11 files
+3 directories, 8 files
 ```
 > **PROTIP**: You can install `tree` via `brew install tree` for mac, or `sudo apt-get install tree` in Linux.
 
@@ -32,10 +27,11 @@ However, all of these files are empty. They are just placeholders to allow some 
 
 Namely,
 
-1. Our pages are actually page *directories*.
+1. Our more complex web pages are actually page *directories*.
   - We need to be able to keep things that belong on the same page together, but not in the same file.
 2. Our files describe parts of our entire page.
   - Our "polls" page directory could just be one file. But we keep it separate to allow rows and columns to support more and more functionality without sacrificing readability of our code base.
+  - This also holds true for components on pages, too. See `test/pages/polls/table`, and the corresponding file, `test/pages/polls/table.js`, which acts as a top-level container for the more complex modules found in the `table/` directory beside it.
 3. Our pages get namespaced this way.
   - That way, if our profile gets a table later, it doesn't need to be called `profileTable.js`. It's just `profile/table.js`, which compartmentalizes our thinking when working on one tiny section of a larger application.
 4. We can nest this as deep as we need to.
