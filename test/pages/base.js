@@ -4,16 +4,28 @@ module.exports = Page.create({
     url: { value: '/home' },
 
     btnLogin: {
-        get: function() { return this.find.by.css('button.navbar-btn'); }
+        get: function () { return $('button.navbar-btn'); }
     },
 
     btnLogout: { 
         // This is aliased to btnLogin, providing a meaningful semantic binding
-        get: function() { return this.btnLogin; }
+        get: function () { return this.btnLogin; }
     },
 
     lnkEpikVote: {
-        get: function() { return this.find.by.css('a.epik-brand'); }
+        get: function () { return $('a.epik-brand'); }
+    },
+
+    goLogin: {
+        value: function () {
+            this.btnLogin.click();
+        }
+    },
+
+    goHome: {
+        value: function () {
+            this.lnkEpikVote.click();
+        }
     },
 
     isLoggedIn: {

@@ -80,7 +80,7 @@ This is a good start. Here are some improvements that are quite common, and can 
   - If so, use the default credentials provided in the project.
 2. Clear the textboxes before typing into them.
 
-To see a more in-depth login function, check [the source](test/pages/login/form.js).
+To see a more in-depth login function, check [the source](test/pages/login.js).
 
 ## Our login tests
 
