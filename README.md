@@ -52,16 +52,16 @@ Eventually, you'll unwrap it all the way to your desired state.
 
 ## Custom objects
 
-The secret to making good custom objects is to always return your results as a promise, and not a raw values (such as an integer, string, or list). This consistency makes it easier for others to use your custom objects without resorting to tedious debugging.
+The secret to making good custom objects is to always return your results as a function, and not a raw values (such as an integer, string, or list). This consistency makes it easier for others to use your custom objects without resorting to tedious debugging.
 
-I highly recommend requiring all custom objects to return promises from their methods/attributes.
+I highly recommend requiring all custom objects to return functions from each of their methods/attributes.
 
 ## For example
 
 Take this code, for instance:
 
 ```javascript
-colums.getColumnByName('Votes').then(function (votesColumn) {
+table.column('Votes').then(function (votesColumn) {
     console.log(votesColumn);
 });
 ```
@@ -69,14 +69,8 @@ colums.getColumnByName('Votes').then(function (votesColumn) {
 We want all of the properties of the column to formatted like this:
 
 ```javascript
-{ name:
-   { then: [Function: then],
-     cancel: [Function: cancel],
-     isPending: [Function: isPending] },
-  data:
-    { then: [Function: then],
-     cancel: [Function: cancel],
-     isPending: [Function: isPending] }
+{ title: [Function],
+  data: [Function]
 }
 ```
 
@@ -84,7 +78,7 @@ And not like this:
 
 ```javascript
 {
-  name: "Votes",
+  title: "Votes",
   data: [12, 22, 32]
 }
 ```
@@ -99,7 +93,7 @@ However, there is a huge difference between how these were coded.
 
 ## A good example
 
-[Rows](test/pages/polls/rows.js) has a very good example of how to implement row objects in a table.
+[Rows](test/pages/polls/table/rows.js) has a very good example of how to implement row objects in a table.
 
 This is because all rows support numbered rows, which makes them easy to map to a page object.
 
