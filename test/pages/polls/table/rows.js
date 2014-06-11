@@ -73,10 +73,8 @@ module.exports = Page.create({
     rowVotesFromElement: {
         value: function (rowElement) {
             // Will return an integer representing the number of votes in the "Votes" column.
-            return rowElement.$('td.ng-binding').then(function (votesPromise) {
-                return votesPromise.getText().then(function (votesText) {
-                    return parseInt(votesText, 10);
-                });
+            return rowElement.$('td.ng-binding').getText().then(function (votesText) {
+                return parseInt(votesText, 10);
             });
         }
     },
