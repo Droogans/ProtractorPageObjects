@@ -1,28 +1,23 @@
+// An example configuration file.
 exports.config = {
-    // The address of a running selenium server. If this is specified,
-    // seleniumServerJar and seleniumPort will be ignored.
-    seleniumAddress: 'http://localhost:4444/wd/hub',
+  // The address of a running selenium server.
+  //seleniumAddress: 'http://localhost:4444/wd/hub',
+  //seleniumServerJar: deprecated, this should be set on node_modules/protractor/config.json
 
-    // A base URL for your application under test. Calls to protractor.get()
-    // with relative paths will be prepended with this.
-    baseUrl: 'http://beta.epikvote.com',
+  // Capabilities to be passed to the webdriver instance.
+  capabilities: {
+    'browserName': 'chrome'
+  },
 
-    specs: [
-        './stories/*.js'
-    ],
+  baseUrl: 'http://localhost:3000/index.html',
 
-    framework: 'mocha',
+  // Spec patterns are relative to the current working directly when
+  // protractor is called.
+  specs: ['e2e/**/spec.js'],
 
-    // Capabilities to be passed to the webdriver instance.
-    capabilities: {
-        'browserName': 'firefox'
-    },
-
-    allScriptsTimeout: 30000,
-
-    // Options to be passed to mocha.
-    mochaOpts: {
-        reporter: 'spec',
-        slow: 10000
-    }
+  // Options to be passed to Jasmine-node.
+  jasmineNodeOpts: {
+    showColors: true,
+    defaultTimeoutInterval: 30000
+  }
 };

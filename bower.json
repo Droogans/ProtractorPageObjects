@@ -1,0 +1,19 @@
+{
+  "name": "protractorPageObjects",
+  "version": "0.0.0",
+  "dependencies": {
+    "modernizr": "2.8.x",
+    "angular": "1.2.x",
+    "angular-sanitize": "1.2.x",
+    "angular-resource": "1.2.x",
+    "angular-route": "1.2.x"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.2.x",
+    "angular-bootstrap": "~0.12.0",
+    "bootstrap": "~3.3.1"
+  },
+  "resolutions": {
+    "angular": ">=1 <1.3.0"
+  }
+}
