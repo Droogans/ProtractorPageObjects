@@ -22,10 +22,15 @@
   "globals": {
     "$": false,
     "$$": false,
+    "afterAll": false,
     "angular": false,
-    "browser", false,
+    "beforeAll": false,
+    "browser": false,
     "by": false,
+    "describe": false,
     "element": false,
+    "expect": true,
+    "it": false,
     "protractor": false
   }
 }

@@ -1,72 +1,121 @@
 'use strict';
 
-// Information about the current slide.
+/**
+   Information about a particular slide.
+ */
+var Slide = function (rootElement) {
+  this.rootElement = rootElement;
+};
+
+Slide.prototype.isActive = function () {
+  return this.rootElement.getAttribute('class').then(function (classNames) {
+    return classNames.indexOf('active') > -1;
+  });
+};
+
+Object.defineProperty(Slide.prototype, 'imageHref', {
+  get: function () {
+    return this.rootElement.$('img').getAttribute('src');
+  }
+});
+
+Object.defineProperty(Slide.prototype, 'text', {
+  get: function () {
+    return this.rootElement.element(by.binding('text')).getText();
+  }
+});
+
+/**
+   Information about all slides.
+ */
 var Slides = function (rootElement) {
-  var _this = this;
   this.rootElement = rootElement;
 
   this.mappings = {
-    get tblSlides() { return rootElement.all(by.repeater('slide in slides')); }
+    get tblSlideIndicators() { return rootElement.$('.carousel-indicators').all(by.repeater('slide in slides')); },
+    get tblSlides() { return rootElement.$('.carousel-inner').all(by.repeater('slide in slides')); }
   };
-
-  Object.defineProperty(this, 'index', {
-    get: function () {
-      return mappings.tblSlides.each(function (element, index) {
-        return element.getAttribute('class').then(function (classes) {
-          if (classes.indexOf('active') > -1) {
-            return index;
-          }
-        });
-      });
-    },
-
-    set: function (index) {
-      return rootElement.all(by.repeater('slide in slides')).get(index).click();
-    }
-  });
-
-  this.count = function () {
-    return _this.mappings.tblSlides.count();
-  }
-
 };
 
-// Interactions with the entire carousel directive.
+/**
+   Will set the `slideIndex` slide to the current slide.
+   The slide must be visible in order to retrieve any information about it.
+ */
+Slides.prototype.byIndex = function (slideIndex) {
+  this.index = slideIndex;
+  return new Slide(this.mappings.tblSlides.get(slideIndex));
+};
+
+Slides.prototype.count = function () {
+  return this.mappings.tblSlideIndicators.count();
+};
+
+Object.defineProperty(Slides.prototype, 'index', {
+  get: function () {
+    return this.mappings.tblSlideIndicators.map(function (element, index) {
+      return element.getAttribute('class').then(function (classes) {
+        if (classes.indexOf('active') > -1) {
+          return index;
+        }
+      });
+    }).then(function (activeIndexes) {
+      return activeIndexes.filter(function (i) { return i !== undefined; })[0];
+    });
+  },
+
+  set: function (index) {
+    return this.mappings.tblSlideIndicators.get(index).click();
+  }
+});
+
+Object.defineProperty(Slides.prototype, 'activeSlide', {
+  get: function () {
+    return new Slide(this.rootElement.$('.carousel-inner .active'));
+  }
+});
+
+/**
+   Interactions with the entire carousel directive.
+ */
 var Carousel = function (rootElement) {
-  var _this = this;
   this.rootElement = rootElement || $('.carousel');
 
   this.mappings = {
     get lnkPrevous() { return rootElement.$('.previous'); },
     get lnkNext() { return rootElement.$('.next'); }
   };
+};
 
-  this.slides = new Slides(rootElement.$('.carousel-indicators'));
-
-  this.hasPrevious = function () {
-    return _this.mappings.lnkPrevious.isDisplayed();
+Object.defineProperty(Carousel.prototype, 'slides', {
+  get: function () {
+    return new Slides(this.rootElement);
   }
+});
 
-  this.hasNext = function () {
-    return _this.mappings.lnkNext.isDisplayed();
-  }
+Carousel.prototype.hasPrevious = function () {
+  return this.mappings.lnkPrevious.isDisplayed();
+};
 
-  this.previous = function () {
-    return _this.hasPrevious().then(function (hasPrevious) {
-      if (hasPrevious) {
-        mappings.lnkPrevious.click();
-      }
-    });
-  };
+Carousel.prototype.hasNext = function () {
+  return this.mappings.lnkNext.isDisplayed();
+};
 
-  this.next = function () {
-    return _this.hasNext().then(function (hasNext) {
-      if (hasNext) {
-        mappings.lnkNext.click();
-      }
-    });
-  };
+Carousel.prototype.previous = function () {
+  var _this = this;
+  return this.hasPrevious().then(function (hasPrevious) {
+    if (hasPrevious) {
+      _this.mappings.lnkPrevious.click();
+    }
+  });
+};
 
+Carousel.prototype.next = function () {
+  var _this = this;
+  return this.hasNext().then(function (hasNext) {
+    if (hasNext) {
+      _this.mappings.lnkNext.click();
+    }
+  });
 };
 
 exports.Carousel = Carousel;
